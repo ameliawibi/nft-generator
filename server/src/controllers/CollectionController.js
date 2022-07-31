@@ -1,4 +1,6 @@
 import { s3 } from "../../s3";
+import { extractZip } from "../utils/zipExtractor";
+
 const bucketName = process.env.AWS_BUCKET_NAME;
 
 export default {
@@ -9,6 +11,11 @@ export default {
     if (file == null) {
       return res.status(400).json({ message: "Please choose the file" });
     }
+    const params = { Bucket: bucketName, Key: file.key };
+
+    const object = await s3.getObject(params).promise();
+    const result = await extractZip(bucketName, object.Body);
+
     let urlToAdd = s3.getSignedUrl("getObject", {
       Bucket: bucketName,
       Key: file.key,
