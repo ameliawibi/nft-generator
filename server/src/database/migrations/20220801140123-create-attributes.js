@@ -1,20 +1,32 @@
 export default {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("Users", {
+    await queryInterface.createTable("Attributes", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      name: {
+      trait_type: {
         type: Sequelize.STRING,
       },
-      email: {
+      probability: {
+        type: Sequelize.DECIMAL(10, 2),
+      },
+      subtrait: {
         type: Sequelize.STRING,
       },
-      password: {
-        type: Sequelize.STRING,
+      rarity: {
+        type: Sequelize.DECIMAL(10, 2),
+      },
+      collectionId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "Collections",
+          key: "id",
+        },
+        onDelete: "cascade",
+        onUpdate: "cascade",
       },
       createdAt: {
         allowNull: false,
@@ -29,6 +41,6 @@ export default {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("Users");
+    await queryInterface.dropTable("Attributes");
   },
 };

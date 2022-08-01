@@ -45,9 +45,9 @@ export const extractZip = (bucketName, buffer) => {
       });
 
       zipfile.on("end", () => {
-        console.log(paths);
-        createObjectsFromPathArrays();
-        resolve("end");
+        //console.log(paths);
+        const objJson = createObjectsFromPathArrays();
+        resolve(objJson);
       });
     });
   });
@@ -104,7 +104,9 @@ function createObjectsFromPathArrays() {
   }
   // Serialize tree for debug purposes
   //console.log(tree);
-  console.log(JSON.stringify(tree, null, 2));
+  //console.log(JSON.stringify(tree, null, 2));
+
+  return JSON.stringify(tree, null, 2);
   /*fs.writeFileSync(
     path.join(outputPath, `layers.json`),
     JSON.stringify(tree, null, 2)

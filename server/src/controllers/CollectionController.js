@@ -15,6 +15,7 @@ export default {
 
     const object = await s3.getObject(params).promise();
     const result = await extractZip(bucketName, object.Body);
+    console.log(`generatedObject: ${result}`);
 
     let urlToAdd = s3.getSignedUrl("getObject", {
       Bucket: bucketName,
