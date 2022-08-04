@@ -1,6 +1,7 @@
 import { s3 } from "../../s3";
-import { extractZip } from "../utils/zipExtractor";
 import model from "../models";
+import { extractZip } from "../utils/zipExtractor";
+import { getFileExt } from "../utils/fileName";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
@@ -79,26 +80,35 @@ export default {
     }
   },
 
-  async getCollection(_req, res) {
+  async getCollection(req, res) {
     s3.listObjects(
       {
         Bucket: bucketName,
+        Prefix: `${req.cookies.userId}/`,
       },
       function (err, data) {
         if (err) {
           console.log(err, err.stack);
         } else {
-          let updatedData = data.Contents;
-          updatedData.forEach((item, index) => {
+          let allFiles = data.Contents;
+          let updatedData = [];
+
+          allFiles.forEach((item, index) => {
             let urlToAdd = s3.getSignedUrl("getObject", {
               Bucket: bucketName,
               Key: item.Key,
               Expires: 60 * 5,
             });
-            updatedData[index].SignedUrl = urlToAdd;
+            allFiles[index].SignedUrl = urlToAdd;
+
+            if (getFileExt(item.Key) === ".zip") {
+              updatedData.push(item);
+              updatedData[index].SignedUrl = urlToAdd;
+            }
           });
 
-          //console.log(updatedData);
+          console.log(updatedData);
+          //console.log(allFiles);
           return res.json({ files: updatedData });
         }
       }
