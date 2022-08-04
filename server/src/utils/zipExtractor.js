@@ -12,7 +12,7 @@ const uploadStream = ({ Bucket, Key }) => {
   };
 };
 
-export const extractZip = (bucketName, buffer) => {
+export const extractZip = (bucketName, buffer, collectionName, userId) => {
   return new Promise((resolve, reject) => {
     yauzl.fromBuffer(buffer, { lazyEntries: true }, function (err, zipfile) {
       if (err) reject(err);
@@ -30,7 +30,9 @@ export const extractZip = (bucketName, buffer) => {
             const fileNames = entry.fileName.split(".");
             const { writeStream, promise } = uploadStream({
               Bucket: bucketName,
-              Key: `1/${fileNames[0]}.${fileNames[fileNames.length - 1]}`,
+              Key: `${userId}/${collectionName}/${fileNames[0]}.${
+                fileNames[fileNames.length - 1]
+              }`,
             });
             readStream.pipe(writeStream);
             promise.then(() => {

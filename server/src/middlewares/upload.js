@@ -11,7 +11,10 @@ export const upload = multer({
       cb(null, { fieldName: file.originalname });
     },
     key: function (req, file, cb) {
-      cb(null, `${req.cookies.userId}/${file.originalname}`); //use Date.now() for unique file keys
+      cb(
+        null,
+        `${req.cookies.userId}/${file.originalname}/${file.originalname}`
+      ); //use Date.now() for unique file keys
     },
   }),
 });
