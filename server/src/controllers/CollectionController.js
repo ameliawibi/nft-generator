@@ -99,11 +99,12 @@ export default {
               Key: item.Key,
               Expires: 60 * 5,
             });
+
             allFiles[index].SignedUrl = urlToAdd;
 
             if (getFileExt(item.Key) === ".zip") {
               updatedData.push(item);
-              updatedData[index].SignedUrl = urlToAdd;
+              //updatedData[index].SignedUrl = urlToAdd;
             }
           });
 
