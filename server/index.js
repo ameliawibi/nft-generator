@@ -4,6 +4,7 @@ import path from "path";
 import AuthController from "./src/controllers/AuthController";
 import CollectionController from "./src/controllers/CollectionController";
 import { upload } from "./src/middlewares/upload";
+import NFTController from "./src/controllers/NFTController";
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -21,6 +22,10 @@ app.get("/api", (req, res) => {
 app.get("/getuser", AuthController.getUser);
 
 app.get("/getfiles", CollectionController.getCollection);
+
+app.get("/getnft", NFTController.generateNFT);
+
+app.get("/gettraits", NFTController.getTraits);
 
 app.post(
   "/uploadfile",
