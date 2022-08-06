@@ -3,6 +3,7 @@ import { Canvas, Image } from "canvas";
 import { s3 } from "../../s3";
 import path from "path";
 import randomlySelectLayers from "./randomlySelectLayers";
+import { emptyNFTFolder } from "./emptyNFTFolder";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
@@ -36,10 +37,12 @@ function uploadToS3(base64PngImage, filename) {
 
 export default async function generateNFTs(
   num,
-  outputpath,
+  NFTfolder,
   layersArray,
   layersFolder
 ) {
+  await emptyNFTFolder(bucketName, NFTfolder);
+
   let generated = new Set();
 
   for (let i = 0; i < num; i++) {
@@ -56,9 +59,9 @@ export default async function generateNFTs(
       generated.add(traitsGenerated);
       await mergeLayersAndSave(
         selection.imagesURL,
-        path.join(outputpath, `${i}.png`)
+        path.join(NFTfolder, `${i}.png`)
       );
-      //path.join(outputpath, `${i}.png`)
+
       let metadata = generateMetadata(i, selection.selectedTraits);
 
       console.log(metadata);

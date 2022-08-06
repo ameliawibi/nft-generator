@@ -14,7 +14,7 @@ export default {
 
       const layers = await generateContents(attributes);
 
-      await generateNFTs(2, "1/layers.zip/nft/", layers, "1/layers.zip/");
+      generateNFTs(2, "1/layers.zip/nft/", layers, "1/layers.zip/");
 
       res.status(200).json({
         layers,
