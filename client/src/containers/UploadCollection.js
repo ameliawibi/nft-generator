@@ -34,7 +34,7 @@ export default function UploadCollection() {
       <p> {theMessage}</p>
       <ul className="font-bold underline">
         {collectionList.map((item, index) => (
-          <li key={index}>{item.Key}</li>
+          <li key={index}>{item.collectionName}</li>
         ))}
       </ul>
     </div>
