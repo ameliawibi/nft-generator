@@ -7,7 +7,7 @@
     "node": "14.17.3"
   },
   "scripts": {
-    "start": "nodemon --exec babel-node server/index.js",
+    "start": "nodemon --exec babel-node server/index.js --ignore client",
     "build": "cd client && npm install && npm run build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

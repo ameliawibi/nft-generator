@@ -34,11 +34,18 @@ export default {
   },
 
   async getTraits(req, res) {
-    const { collectionName } = req.params;
+    const { collectionId } = req.params;
     try {
       const traits = await model.Attribute.findAll({
-        collectionName: collectionName,
+        where: { collectionId: Number(collectionId) },
       });
+
+      if (traits.length === 0) {
+        res.status(404).json({
+          message: "Collection not found",
+        });
+      }
+
       const attributesList = traits.map((Item) => ({ ...Item.dataValues }));
 
       res.status(200).json({
