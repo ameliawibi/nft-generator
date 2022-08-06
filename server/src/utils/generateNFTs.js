@@ -3,7 +3,8 @@ import { Canvas, Image } from "canvas";
 import { s3 } from "../../s3";
 import path from "path";
 import randomlySelectLayers from "./randomlySelectLayers";
-import { emptyNFTFolder } from "./emptyNFTFolder";
+import emptyNFTFolder from "./emptyNFTFolder";
+import uploadJsonToS3 from "./uploadJsonToS3";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
@@ -64,6 +65,7 @@ export default async function generateNFTs(
 
       let metadata = generateMetadata(i, selection.selectedTraits);
 
+      uploadJsonToS3(metadata, `${i}.json`, NFTfolder);
       console.log(metadata);
     }
   }

@@ -5,7 +5,7 @@ import generateNFTs from "../utils/generateNFTs";
 const bucketName = process.env.AWS_BUCKET_NAME;
 
 export default {
-  async generateNFT(_req, res) {
+  async generateNFT(req, res) {
     try {
       const traits = await model.Attribute.findAll({
         collectionId: 12,
@@ -14,7 +14,12 @@ export default {
 
       const layers = await generateContents(attributes);
 
-      generateNFTs(2, "1/layers.zip/nft/", layers, "1/layers.zip/");
+      generateNFTs(
+        2,
+        `${req.cookies.userId}/layers.zip/nft/`,
+        layers,
+        `${req.cookies.userId}/layers.zip/`
+      );
 
       res.status(200).json({
         layers,

@@ -23,7 +23,7 @@ app.get("/getuser", AuthController.getUser);
 
 app.get("/getfiles", CollectionController.getCollection);
 
-app.get("/getnft", NFTController.generateNFT);
+app.post("/generateNFT", NFTController.generateNFT);
 
 app.get("/gettraits", NFTController.getTraits);
 

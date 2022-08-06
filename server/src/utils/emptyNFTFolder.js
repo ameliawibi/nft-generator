@@ -1,6 +1,6 @@
 import { s3 } from "../../s3";
 
-export async function emptyNFTFolder(bucket, folder) {
+export default async function emptyNFTFolder(bucket, folder) {
   let params = {
     Bucket: bucket,
     Prefix: folder,
