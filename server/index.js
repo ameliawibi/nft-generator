@@ -25,6 +25,8 @@ app.get("/getfiles", CollectionController.getCollection);
 
 app.post("/generateNFT", NFTController.generateNFT);
 
+app.post("/downloadNFT", NFTController.downloadNFT);
+
 app.get("/gettraits", NFTController.getTraits);
 
 app.post(
