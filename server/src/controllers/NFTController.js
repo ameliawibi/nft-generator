@@ -7,11 +7,11 @@ const bucketName = process.env.AWS_BUCKET_NAME;
 
 export default {
   async generateNFT(req, res) {
-    const { collectionId, collectionName, num } = req.body;
+    const { collectionName, num } = req.body;
 
     try {
       const traits = await model.Attribute.findAll({
-        collectionId: collectionId,
+        collectionName: collectionName,
       });
       const attributes = traits.map((Item) => ({ ...Item.dataValues }));
 
@@ -33,10 +33,11 @@ export default {
     }
   },
 
-  async getTraits(_req, res) {
+  async getTraits(req, res) {
+    const { collectionName } = req.params;
     try {
       const traits = await model.Attribute.findAll({
-        collectionId: 12,
+        collectionName: collectionName,
       });
       const attributesList = traits.map((Item) => ({ ...Item.dataValues }));
 

@@ -2,6 +2,7 @@ import { s3 } from "../../s3";
 import model from "../models";
 import { extractZip } from "../utils/zipExtractor";
 import { getFileExt, getFilename } from "../utils/fileName";
+import emptyNFTFolder from "../utils/emptyNFTFolder";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
@@ -112,6 +113,23 @@ export default {
           }
         }
       );
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async deleteCollection(req, res) {
+    let { collectionName } = req.params;
+    try {
+      emptyNFTFolder(bucketName, `${req.cookies.userId}/${collectionName}`);
+      const deleted = await model.Collection.destroy({
+        where: { collectionName: collectionName },
+      });
+      if (!deleted) {
+        res.status(204).json({ message: "Content not found" });
+      }
+
+      res.status(202).json({ message: "Deleted!", files: deleted });
     } catch (error) {
       console.log(error);
     }

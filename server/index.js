@@ -1,6 +1,7 @@
 import express from "express";
 import cookieParser from "cookie-parser";
 import path from "path";
+import methodOverride from "method-override";
 import AuthController from "./src/controllers/AuthController";
 import CollectionController from "./src/controllers/CollectionController";
 import { upload } from "./src/middlewares/upload";
@@ -11,6 +12,7 @@ const app = express();
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(methodOverride("_method"));
 
 // Have Node serve the files for our built React app
 app.use(express.static(path.resolve(__dirname, "../client/build")));
@@ -27,7 +29,7 @@ app.post("/generateNFT", NFTController.generateNFT);
 
 app.post("/downloadNFT", NFTController.downloadNFT);
 
-app.get("/gettraits", NFTController.getTraits);
+app.get("/:collectionName/gettraits", NFTController.getTraits);
 
 app.post("/updatetraits", NFTController.updateTraits);
 
@@ -36,6 +38,8 @@ app.post(
   upload.single("file"),
   CollectionController.uploadCollection
 );
+
+app.delete("/:collectionName/delete", CollectionController.deleteCollection);
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {
