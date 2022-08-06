@@ -25,6 +25,7 @@ export default {
       );
 
       res.status(200).json({
+        message: "Success!",
         layers,
       });
     } catch (error) {
@@ -37,11 +38,32 @@ export default {
       const traits = await model.Attribute.findAll({
         collectionId: 12,
       });
-      const attributes = traits.map((Item) => ({ ...Item.dataValues }));
+      const attributesList = traits.map((Item) => ({ ...Item.dataValues }));
 
       res.status(200).json({
-        attributes,
+        message: "Success!",
+        attributesList,
       });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
+  async updateTraits(req, res) {
+    const { attributes } = req.body;
+    const attributesJSON = JSON.parse(attributes);
+    //console.log(attributesJSON[0].id);
+    try {
+      const attributesList = await model.Attribute.bulkCreate(attributesJSON, {
+        updateOnDuplicate: [
+          "trait_type",
+          "probability",
+          "subtrait",
+          "rarity",
+          "updatedAt",
+        ],
+      });
+      res.status(200).json({ message: "Success!", attributesList });
     } catch (error) {
       console.log(error);
     }

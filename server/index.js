@@ -29,6 +29,8 @@ app.post("/downloadNFT", NFTController.downloadNFT);
 
 app.get("/gettraits", NFTController.getTraits);
 
+app.post("/updatetraits", NFTController.updateTraits);
+
 app.post(
   "/uploadfile",
   upload.single("file"),
