@@ -1,19 +1,27 @@
 import "./App.css";
 import { useEffect } from "react";
 import axios from "axios";
-import UploadCollection from "./containers/UploadCollection";
 import { CollectionProvider } from "./contexts/collection-context";
+import { Routes, Route } from "react-router-dom";
+import MainNav from "./pages/MainNav";
+import Collection from "./pages/Collection";
 
 function App() {
   useEffect(() => {
-    axios.get("/getuser").then((res) => console.log(res));
+    axios.get("/getuser").then((_res) => console.log("Logged in!"));
   }, []);
 
   return (
     <CollectionProvider>
       <div className="App">
-        <h1>Hello world!</h1>
-        <UploadCollection />
+        <Routes>
+          <Route path="/*" element={<MainNav />} />
+        </Routes>
+      </div>
+      <div>
+        <Routes>
+          <Route path="collection" element={<Collection />} />
+        </Routes>
       </div>
     </CollectionProvider>
   );
