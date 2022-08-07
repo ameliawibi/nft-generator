@@ -10,30 +10,42 @@ const bucketName = process.env.AWS_BUCKET_NAME;
 
 async function mergeLayersAndSave(layers, outputFile) {
   const image = await mergeImages(layers, { Canvas: Canvas, Image: Image });
-  uploadToS3(image, outputFile);
+  const nftUrl = await uploadToS3(image, outputFile);
+  //console.log(nftUrl);
+
+  return nftUrl;
 }
 
-function uploadToS3(base64PngImage, filename) {
-  let base64 = base64PngImage.split(",")[1];
-  let imageBuffer = new Buffer.from(base64, "base64");
-  console.log(imageBuffer);
-  s3.upload(
-    {
-      Bucket: bucketName,
-      Key: filename,
-      Body: imageBuffer,
-      ContentEncoding: "base64",
-      ContentType: "image/png",
-    },
-    function (err, data) {
-      if (err) {
-        console.log(err);
-        console.log("Error uploading data: ", data);
-      } else {
-        console.log("succesfully uploaded the image!");
+async function uploadToS3(base64PngImage, filename) {
+  return new Promise((resolve, reject) => {
+    let base64 = base64PngImage.split(",")[1];
+    let imageBuffer = new Buffer.from(base64, "base64");
+    console.log(imageBuffer);
+    s3.upload(
+      {
+        Bucket: bucketName,
+        Key: filename,
+        Body: imageBuffer,
+        ContentEncoding: "base64",
+        ContentType: "image/png",
+      },
+      function (err, data) {
+        if (err) {
+          console.log(err);
+          console.log("Error uploading data: ", data);
+        } else {
+          let nftUrl = s3.getSignedUrl("getObject", {
+            Bucket: bucketName,
+            Key: data.key,
+            Expires: 60 * 24,
+          });
+          console.log("succesfully uploaded the image!");
+          //console.log(nftUrl);
+          resolve(nftUrl);
+        }
       }
-    }
-  );
+    );
+  });
 }
 
 export default async function generateNFTs(
@@ -58,7 +70,7 @@ export default async function generateNFTs(
       continue;
     } else {
       generated.add(traitsGenerated);
-      await mergeLayersAndSave(
+      const nftUrl = await mergeLayersAndSave(
         selection.imagesURL,
         path.join(NFTfolder, `${i}.png`)
       );
@@ -67,6 +79,7 @@ export default async function generateNFTs(
         i,
         selection.selectedTraits,
         `Collection of ${num} NFTs`,
+        nftUrl,
         `My NFT`
       );
 
@@ -76,7 +89,13 @@ export default async function generateNFTs(
   }
 }
 
-function generateMetadata(tokenId, traits, description, collectionName) {
+function generateMetadata(
+  tokenId,
+  traits,
+  description,
+  nftUrl,
+  collectionName
+) {
   let attributes = [];
   for (const [trait_type, value] of Object.entries(traits)) {
     attributes.push({ trait_type, value });
@@ -85,6 +104,7 @@ function generateMetadata(tokenId, traits, description, collectionName) {
     attributes,
     description,
     id: tokenId,
+    image: nftUrl,
     name: `${collectionName} #${tokenId}`,
   };
 }
