@@ -63,7 +63,12 @@ export default async function generateNFTs(
         path.join(NFTfolder, `${i}.png`)
       );
 
-      let metadata = generateMetadata(i, selection.selectedTraits);
+      let metadata = generateMetadata(
+        i,
+        selection.selectedTraits,
+        `Collection of ${num} NFTs`,
+        `My NFT`
+      );
 
       uploadJsonToS3(metadata, `${i}.json`, NFTfolder);
       console.log(metadata);
@@ -71,12 +76,17 @@ export default async function generateNFTs(
   }
 }
 
-function generateMetadata(tokenId, traits) {
+function generateMetadata(tokenId, traits, description, collectionName) {
   let attributes = [];
   for (const [trait_type, value] of Object.entries(traits)) {
     attributes.push({ trait_type, value });
   }
-  return { tokenId, attributes };
+  return {
+    attributes,
+    description,
+    id: tokenId,
+    name: `${collectionName} #${tokenId}`,
+  };
 }
 
 //generateNFTs(2, "1/layers.zip/nft/", layers, prefix);
