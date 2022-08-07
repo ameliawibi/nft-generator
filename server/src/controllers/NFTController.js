@@ -7,71 +7,60 @@ const bucketName = process.env.AWS_BUCKET_NAME;
 
 export default {
   async generateNFT(req, res) {
+    const { collectionId } = req.params;
     const { collectionName, num } = req.body;
 
     try {
       const traits = await model.Attribute.findAll({
-        collectionName: collectionName,
+        where: {
+          collectionId: collectionId,
+        },
       });
       const attributes = traits.map((Item) => ({ ...Item.dataValues }));
 
       const layers = await generateContents(attributes);
 
-      generateNFTs(
+      res.status(200).json({
+        message: "Success!",
+        layers,
+      });
+
+      await generateNFTs(
         num,
         `${req.cookies.userId}/${collectionName}/nft/`,
         layers,
         `${req.cookies.userId}/${collectionName}/`
       );
 
-      res.status(200).json({
-        message: "Success!",
-        layers,
-      });
+      await model.Collection.update(
+        { isNFTGenerated: true },
+        { where: { id: collectionId } }
+      );
     } catch (error) {
       console.log(error);
     }
   },
 
-  async getTraits(req, res) {
-    const { collectionId } = req.params;
+  async getNFTCollections(req, res) {
     try {
-      const traits = await model.Attribute.findAll({
-        where: { collectionId: Number(collectionId) },
+      const collectionsWithNFT = await model.Collection.findAll({
+        where: {
+          userId: req.cookies.userId,
+          isNFTGenerated: true,
+        },
       });
 
-      if (traits.length === 0) {
-        res.status(404).json({
-          message: "Collection not found",
+      if (collectionsWithNFT.length === 0) {
+        res.status(204).json({
+          message: "Please generate NFTs",
         });
       }
 
-      const attributesList = traits.map((Item) => ({ ...Item.dataValues }));
+      const NFTList = collectionsWithNFT.map((Item) => ({
+        ...Item.dataValues,
+      }));
 
-      res.status(200).json({
-        message: "Success!",
-        attributesList,
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  },
-
-  async updateTraits(req, res) {
-    const { attributes } = req.body;
-    const attributesJSON = JSON.parse(attributes);
-    //console.log(attributesJSON[0].id);
-    try {
-      const attributesList = await model.Attribute.bulkCreate(attributesJSON, {
-        updateOnDuplicate: [
-          "trait_type",
-          "probability",
-          "subtrait",
-          "rarity",
-          "updatedAt",
-        ],
-      });
-      res.status(200).json({ message: "Success!", attributesList });
+      res.status(200).json({ message: "Your NFTs", NFTList });
     } catch (error) {
       console.log(error);
     }

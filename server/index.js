@@ -6,6 +6,7 @@ import AuthController from "./src/controllers/AuthController";
 import CollectionController from "./src/controllers/CollectionController";
 import { upload } from "./src/middlewares/upload";
 import NFTController from "./src/controllers/NFTController";
+import AttributesController from "./src/controllers/AttributesController";
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -25,13 +26,15 @@ app.get("/getuser", AuthController.getUser);
 
 app.get("/getfiles", CollectionController.getCollection);
 
-app.post("/generateNFT", NFTController.generateNFT);
+app.post("/:collectionId/generateNFT", NFTController.generateNFT);
+
+app.get("/collectionWithNFT", NFTController.getNFTCollections);
 
 app.post("/downloadNFT", NFTController.downloadNFT);
 
-app.get("/:collectionId/gettraits", NFTController.getTraits);
+app.get("/:collectionId/gettraits", AttributesController.getTraits);
 
-app.post("/updatetraits", NFTController.updateTraits);
+app.post("/updatetraits", AttributesController.updateTraits);
 
 app.post(
   "/uploadfile",
@@ -39,7 +42,7 @@ app.post(
   CollectionController.uploadCollection
 );
 
-app.delete("/:collectionName/delete", CollectionController.deleteCollection);
+app.delete("/:collectionId/delete", CollectionController.deleteCollection);
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {

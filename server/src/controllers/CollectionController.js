@@ -49,8 +49,6 @@ export default {
           req.cookies.userId
         );
 
-        //console.log(`generatedObject: ${result}`);
-
         const layersJson = JSON.parse(result).layers;
 
         let objectKeys = [];
@@ -133,17 +131,18 @@ export default {
   },
 
   async deleteCollection(req, res) {
-    let { collectionName } = req.params;
+    const { collectionId } = req.params;
+    const { collectionName } = req.body;
     try {
       emptyNFTFolder(bucketName, `${req.cookies.userId}/${collectionName}`);
       const deleted = await model.Collection.destroy({
-        where: { collectionName: collectionName },
+        where: { id: collectionId },
       });
       if (!deleted) {
-        res.status(204).json({ message: "Content not found" });
+        res.status(204).json({ message: "Collection not found" });
       }
 
-      res.status(202).json({ message: "Deleted!", files: deleted });
+      res.status(202).json({ message: "Deleted!" });
     } catch (error) {
       console.log(error);
     }
