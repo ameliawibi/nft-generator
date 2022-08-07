@@ -13,8 +13,8 @@ export default {
       if (user) {
         return res
           .status(200)
-          .cookie("userId", 1)
-          .send({ message: "User with that name already exists" });
+          .cookie("userId", user.dataValues.id)
+          .send({ message: "Welcome!" });
       }
     } catch (e) {
       console.log(e);

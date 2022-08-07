@@ -19,15 +19,27 @@ export default (sequelize, DataTypes) => {
   }
   Collection.init(
     {
-      collectionName: DataTypes.STRING,
+      collectionName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
       userId: {
         type: DataTypes.INTEGER,
         references: {
           model: "Users",
           key: "id",
         },
+        allowNull: false,
+        validate: {
+          isInt: true,
+        },
         onDelete: "cascade",
         onUpdate: "cascade",
+      },
+      isNFTGenerated: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
       },
       createdAt: {
         type: DataTypes.DATE,

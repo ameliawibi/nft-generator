@@ -14,70 +14,84 @@ export default {
     if (file == null) {
       return res.status(400).json({ message: "Please choose the file" });
     }
-    const t = await model.sequelize.transaction();
-    try {
-      const newCollection = await model.Collection.create(
-        {
-          collectionName: file.originalname,
-          userId: req.cookies.userId,
-        },
-        { transaction: t }
-      );
 
-      //console.log(newCollection.dataValues.id);
+    const duplicateCollection = await model.Collection.findOne({
+      where: {
+        collectionName: file.originalname,
+        userId: req.cookies.userId,
+      },
+    });
 
-      const params = { Bucket: bucketName, Key: file.key };
+    if (duplicateCollection) {
+      console.log("duplicate found");
+      res.status(409).send({ message: "Duplicate collection found" });
+    } else {
+      console.log("duplicate not found");
+      const t = await model.sequelize.transaction();
+      try {
+        const newCollection = await model.Collection.create(
+          {
+            userId: req.cookies.userId,
+            collectionName: file.originalname,
+          },
+          { transaction: t }
+        );
 
-      const object = await s3.getObject(params).promise();
-      const result = await extractZip(
-        bucketName,
-        object.Body,
-        file.originalname,
-        req.cookies.userId
-      );
+        //console.log(newCollection.dataValues.id);
 
-      //console.log(`generatedObject: ${result}`);
+        const params = { Bucket: bucketName, Key: file.key };
 
-      const layersJson = JSON.parse(result).layers;
+        const object = await s3.getObject(params).promise();
+        const result = await extractZip(
+          bucketName,
+          object.Body,
+          file.originalname,
+          req.cookies.userId
+        );
 
-      let objectKeys = [];
-      for (let i = 0; i < layersJson.length; i++) {
-        objectKeys.push(...Object.keys(layersJson[i]));
-        for (const element of layersJson[i][objectKeys[i]]) {
-          await model.Attribute.create(
-            {
-              collectionId: newCollection.dataValues.id,
-              trait_type: objectKeys[i],
-              probability: 1,
-              subtrait: element,
-              rarity: 1,
-            },
-            { transaction: t }
-          );
+        //console.log(`generatedObject: ${result}`);
+
+        const layersJson = JSON.parse(result).layers;
+
+        let objectKeys = [];
+        for (let i = 0; i < layersJson.length; i++) {
+          objectKeys.push(...Object.keys(layersJson[i]));
+          for (const element of layersJson[i][objectKeys[i]]) {
+            await model.Attribute.create(
+              {
+                collectionId: newCollection.dataValues.id,
+                trait_type: objectKeys[i],
+                probability: 1,
+                subtrait: element,
+                rarity: 1,
+              },
+              { transaction: t }
+            );
+          }
         }
+
+        await t.commit();
+
+        let urlToAdd = s3.getSignedUrl("getObject", {
+          Bucket: bucketName,
+          Key: file.key,
+          Expires: 60 * 5,
+        });
+
+        let updatedData = {
+          SignedUrl: urlToAdd,
+          Key: file.key,
+          type: file.mimetype,
+          size: file.size,
+        };
+
+        res.status(201).json({
+          message: "Uploaded!",
+          files: updatedData,
+        });
+      } catch (error) {
+        await t.rollback();
       }
-
-      await t.commit();
-
-      let urlToAdd = s3.getSignedUrl("getObject", {
-        Bucket: bucketName,
-        Key: file.key,
-        Expires: 60 * 5,
-      });
-
-      let updatedData = {
-        SignedUrl: urlToAdd,
-        Key: file.key,
-        type: file.mimetype,
-        size: file.size,
-      };
-
-      res.status(201).json({
-        message: "Uploaded!",
-        files: updatedData,
-      });
-    } catch (error) {
-      await t.rollback();
     }
   },
 

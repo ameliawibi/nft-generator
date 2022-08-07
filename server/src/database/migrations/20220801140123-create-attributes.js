@@ -9,15 +9,19 @@ export default {
       },
       trait_type: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       probability: {
         type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
       },
       subtrait: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       rarity: {
         type: Sequelize.DECIMAL(10, 2),
+        allowNull: false,
       },
       collectionId: {
         type: Sequelize.INTEGER,
@@ -25,6 +29,7 @@ export default {
           model: "Collections",
           key: "id",
         },
+        allowNull: false,
         onDelete: "cascade",
         onUpdate: "cascade",
       },

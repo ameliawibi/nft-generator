@@ -9,6 +9,7 @@ export default {
       },
       collectionName: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       userId: {
         type: Sequelize.INTEGER,
@@ -16,8 +17,13 @@ export default {
           model: "Users",
           key: "id",
         },
+        allowNull: false,
         onDelete: "cascade",
         onUpdate: "cascade",
+      },
+      isNFTGenerated: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

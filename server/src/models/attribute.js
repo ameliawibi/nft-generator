@@ -15,15 +15,37 @@ export default (sequelize, DataTypes) => {
   }
   Attribute.init(
     {
-      trait_type: DataTypes.STRING,
-      probability: DataTypes.DECIMAL(10, 2),
-      subtrait: DataTypes.STRING,
-      rarity: DataTypes.DECIMAL(10, 2),
+      trait_type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      probability: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        validate: {
+          isDecimal: true,
+        },
+      },
+      subtrait: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      rarity: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+        validate: {
+          isDecimal: true,
+        },
+      },
       collectionId: {
         type: DataTypes.INTEGER,
         references: {
           model: "Collections",
           key: "id",
+        },
+        allowNull: false,
+        validate: {
+          isInt: true,
         },
         onDelete: "cascade",
         onUpdate: "cascade",
