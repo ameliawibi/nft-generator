@@ -82,10 +82,9 @@ export const CollectionProvider = ({ children }) => {
       });
   };
 
-  const deleteCollection = async (fileName, index) => {
-    console.log(fileName);
+  const deleteCollection = async (collectionId, collectionName, index) => {
     axios
-      .get(`/deletefile?filename=${fileName}`)
+      .delete(`/${collectionId}/${collectionName}/delete`)
       .then((res) => {
         console.log(res);
         dispatch({ type: actions.DELETE, payload: index });

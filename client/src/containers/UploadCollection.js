@@ -5,7 +5,7 @@ import { useCollection } from "../hooks/useCollection";
 export default function UploadCollection() {
   const [theMessage, setMessage] = useState("");
   const [selectedFile, setSelectedFile] = useState(null);
-  const { uploadCollection, collectionList } = useCollection();
+  const { uploadCollection } = useCollection();
 
   const onChange = (e) => {
     // Update the state
@@ -27,16 +27,12 @@ export default function UploadCollection() {
 
   return (
     <div>
+      <h1>Upload collection</h1>
       <UploadComponent
         onChange={(e) => onChange(e)}
         onSubmit={(e) => uploadFile(e)}
       />
       <p> {theMessage}</p>
-      <ul className="font-bold underline">
-        {collectionList.map((item, index) => (
-          <li key={index}>{item.collectionName}</li>
-        ))}
-      </ul>
     </div>
   );
 }

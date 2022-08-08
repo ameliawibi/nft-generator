@@ -42,7 +42,10 @@ app.post(
   CollectionController.uploadCollection
 );
 
-app.delete("/:collectionId/delete", CollectionController.deleteCollection);
+app.delete(
+  "/:collectionId/:collectionName/delete",
+  CollectionController.deleteCollection
+);
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {

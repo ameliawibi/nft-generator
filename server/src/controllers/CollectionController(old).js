@@ -1,6 +1,7 @@
 import { s3 } from "../../s3";
 import model from "../models";
 import { extractZip } from "../utils/zipExtractor";
+import { getFileExt, getFilename } from "../utils/fileName";
 import emptyNFTFolder from "../utils/emptyNFTFolder";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
@@ -36,6 +37,8 @@ export default {
           { transaction: t }
         );
 
+        //console.log(newCollection.dataValues.id);
+
         const params = { Bucket: bucketName, Key: file.key };
 
         const object = await s3.getObject(params).promise();
@@ -67,9 +70,22 @@ export default {
 
         await t.commit();
 
+        let urlToAdd = s3.getSignedUrl("getObject", {
+          Bucket: bucketName,
+          Key: file.key,
+          Expires: 60 * 5,
+        });
+
+        let updatedData = {
+          SignedUrl: urlToAdd,
+          Key: file.key,
+          type: file.mimetype,
+          size: file.size,
+        };
+
         res.status(201).json({
           message: "Uploaded!",
-          files: newCollection,
+          files: updatedData,
         });
       } catch (error) {
         await t.rollback();
@@ -79,15 +95,44 @@ export default {
 
   async getCollection(req, res) {
     try {
-      const allCollections = await model.Collection.findAll({});
-      return res.json({ files: allCollections });
+      s3.listObjects(
+        {
+          Bucket: bucketName,
+          Prefix: `${req.cookies.userId}/`,
+        },
+        function (err, data) {
+          if (err) {
+            console.log(err, err.stack);
+          } else {
+            let allFiles = data.Contents;
+            let updatedData = [];
+
+            allFiles.forEach((item, index) => {
+              let urlToAdd = s3.getSignedUrl("getObject", {
+                Bucket: bucketName,
+                Key: item.Key,
+                Expires: 60 * 5,
+              });
+
+              allFiles[index].SignedUrl = urlToAdd;
+              allFiles[index].collectionName = getFilename(item.Key);
+
+              if (getFileExt(item.Key) === ".zip") {
+                updatedData.push(item);
+              }
+            });
+            return res.json({ files: updatedData });
+          }
+        }
+      );
     } catch (error) {
       console.log(error);
     }
   },
 
   async deleteCollection(req, res) {
-    const { collectionId, collectionName } = req.params;
+    const { collectionId } = req.params;
+    const { collectionName } = req.body;
     try {
       emptyNFTFolder(bucketName, `${req.cookies.userId}/${collectionName}`);
       const deleted = await model.Collection.destroy({
