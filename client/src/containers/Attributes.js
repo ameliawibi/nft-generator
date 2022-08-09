@@ -1,22 +1,27 @@
 import Button from "@mui/material/Button";
 import { useForm } from "react-hook-form";
-import FormInputText from "../components/FormInputText";
-import FormInputSlider from "../components/FormInputSlider";
+import FieldArray from "../components/Fields";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function Attributes({ collectionId }) {
   const [defaultValues, setDefaultValues] = useState(null);
 
-  const methods = useForm({
-    defaultValues: defaultValues,
+  const { control, register, handleSubmit, errors, reset } = useForm({
+    defaultValues,
   });
-  const { handleSubmit, control, reset } = methods;
+
   const onSubmit = (data) => console.log(data);
 
   useEffect(() => {
     axios.get(`${collectionId}/gettraits/`).then((res) => {
-      setDefaultValues(res.data.attributesList[0]);
+      const newArr = [];
+      res.data.attributesList.map((o) => {
+        delete Object.assign(o, { ["tableId"]: o["id"] })["id"];
+        newArr.push(o);
+        return newArr;
+      });
+      setDefaultValues({ attributesList: newArr });
     });
   }, []);
 
@@ -27,26 +32,9 @@ export default function Attributes({ collectionId }) {
   return (
     <div>
       {defaultValues && (
-        <form>
-          <FormInputText
-            name={"trait_type"}
-            control={control}
-            label={"trait_type"}
-            defaultValues={defaultValues}
-          />
-          <FormInputSlider
-            name={"probability"}
-            control={control}
-            label={"probability"}
-            defaultValues={defaultValues}
-          />
-          <FormInputSlider
-            name={"rarity"}
-            control={control}
-            label={"rarity"}
-            defaultValues={defaultValues}
-          />
-          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <FieldArray {...{ control, register, defaultValues, errors }} />
+          <button type="submit">Submit</button>
         </form>
       )}
     </div>
