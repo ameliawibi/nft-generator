@@ -32,9 +32,9 @@ export default function Attributes({ collectionId }) {
   return (
     <div>
       {defaultValues && (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <FieldArray {...{ control, register, defaultValues, errors }} />
-          <button type="submit">Submit</button>
+          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
         </form>
       )}
     </div>
