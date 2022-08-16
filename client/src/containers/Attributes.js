@@ -11,17 +11,30 @@ export default function Attributes({ collectionId }) {
     defaultValues,
   });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    const counts = {};
+    let chosenIndex = [];
+    data.attributesList.map((item, index) => {
+      counts[item.trait_type] = counts[item.trait_type]
+        ? counts[item.trait_type] + 1
+        : 1;
+      if (counts[item.trait_type] === 1) {
+        chosenIndex.push(index);
+      }
+    });
+    data.attributesList.map((item, index) => {
+      for (let i = 0; i < chosenIndex.length; i++) {
+        if (chosenIndex[i] < index && chosenIndex[i + 1] > index) {
+          item.probability = data.attributesList[chosenIndex[i]].probability;
+        }
+      }
+    });
+    console.log(data);
+  };
 
   useEffect(() => {
     axios.get(`${collectionId}/gettraits/`).then((res) => {
-      const newArr = [];
-      res.data.attributesList.map((o) => {
-        delete Object.assign(o, { ["tableId"]: o["id"] })["id"];
-        newArr.push(o);
-        return newArr;
-      });
-      setDefaultValues({ attributesList: newArr });
+      setDefaultValues({ attributesList: res.data.attributesList });
     });
   }, []);
 
