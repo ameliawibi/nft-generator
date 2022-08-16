@@ -9,7 +9,9 @@ export default function CollectionList() {
   const navigate = useNavigate();
 
   const handleNavigate = (collectionId) => {
-    navigate("/collection/attribute", { state: { collectionId } });
+    navigate(`/collection/attribute`, {
+      state: { collectionId },
+    });
   };
 
   return (

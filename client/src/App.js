@@ -27,12 +27,12 @@ function App() {
       <div>
         <Routes>
           <Route index element={<Collection />} />
-          <Route path="collection" element={<Collection />}>
-            <Route
-              path="attribute"
-              element={<Attributes collectionId={collectionId} />}
-            />
-          </Route>
+          <Route path="collection" element={<Collection />}></Route>
+          <Route
+            exact
+            path="/collection/attribute"
+            element={<Attributes collectionId={collectionId} />}
+          />
         </Routes>
       </div>
     </CollectionProvider>
