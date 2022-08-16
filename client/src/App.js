@@ -11,7 +11,6 @@ import { useLocation } from "react-router-dom";
 function App() {
   const { state } = useLocation();
   const { collectionId } = state || {};
-  console.log(state);
 
   useEffect(() => {
     axios.get("/getuser").then((_res) => console.log("Logged in!"));
@@ -27,10 +26,10 @@ function App() {
       <div>
         <Routes>
           <Route index element={<Collection />} />
-          <Route path="collection" element={<Collection />}></Route>
+          <Route path="collection" element={<Collection />} />
           <Route
             exact
-            path="/collection/attribute"
+            path="/collection/attribute/:collectionId"
             element={<Attributes collectionId={collectionId} />}
           />
         </Routes>

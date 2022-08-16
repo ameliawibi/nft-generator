@@ -21,6 +21,7 @@ export default function Attributes({ collectionId }) {
       if (counts[item.trait_type] === 1) {
         chosenIndex.push(index);
       }
+      return chosenIndex;
     });
     data.attributesList.map((item, index) => {
       for (let i = 0; i < chosenIndex.length; i++) {
@@ -28,18 +29,23 @@ export default function Attributes({ collectionId }) {
           item.probability = data.attributesList[chosenIndex[i]].probability;
         }
       }
+      return data;
     });
     console.log(data);
   };
 
   useEffect(() => {
-    axios.get(`${collectionId}/gettraits/`).then((res) => {
-      setDefaultValues({ attributesList: res.data.attributesList });
-    });
+    axios
+      .get(`/collection/attribute/${collectionId}/gettraits/`)
+      .then((res) => {
+        setDefaultValues({ attributesList: res.data.attributesList });
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     reset(defaultValues);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [defaultValues]);
 
   return (

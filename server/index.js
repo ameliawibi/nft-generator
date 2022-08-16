@@ -32,7 +32,10 @@ app.get("/collectionWithNFT", NFTController.getNFTCollections);
 
 app.post("/downloadNFT", NFTController.downloadNFT);
 
-app.get("/collection/:collectionId/gettraits", AttributesController.getTraits);
+app.get(
+  "/collection/attribute/:collectionId/gettraits",
+  AttributesController.getTraits
+);
 
 app.post("/updatetraits", AttributesController.updateTraits);
 

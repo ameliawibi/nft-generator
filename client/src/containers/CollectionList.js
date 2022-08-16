@@ -1,7 +1,6 @@
 import CollectionTable from "../components/CollectionTable";
 import { useCollection } from "../hooks/useCollection";
-import { useNavigate } from "react-router-dom";
-import { Outlet } from "react-router-dom";
+import { useNavigate, Outlet } from "react-router-dom";
 
 export default function CollectionList() {
   const { collectionList, deleteCollection } = useCollection();
@@ -9,7 +8,7 @@ export default function CollectionList() {
   const navigate = useNavigate();
 
   const handleNavigate = (collectionId) => {
-    navigate(`/collection/attribute`, {
+    navigate(`/collection/attribute/${collectionId}`, {
       state: { collectionId },
     });
   };
