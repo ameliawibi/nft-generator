@@ -7,6 +7,8 @@ const bucketName = process.env.AWS_BUCKET_NAME;
 
 export default {
   async uploadCollection(req, res) {
+    res.connection.setTimeout(5 * 60 * 1000);
+
     let file = req.file;
     //console.log(file.key);
 

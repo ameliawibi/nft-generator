@@ -9,7 +9,11 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
 
-export default function CollectionTable({ rows, deleteCollection }) {
+export default function CollectionTable({
+  rows,
+  deleteCollection,
+  handleNavigate,
+}) {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -47,6 +51,10 @@ export default function CollectionTable({ rows, deleteCollection }) {
                       deleteCollection(row.id, row.collectionName, index)
                     }
                   />
+                </Button>
+                <Button variant="text" component="label">
+                  SubTraits
+                  <button hidden onClick={() => handleNavigate(row.id)} />
                 </Button>
               </TableCell>
             </TableRow>

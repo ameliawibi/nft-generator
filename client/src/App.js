@@ -6,8 +6,13 @@ import { Routes, Route } from "react-router-dom";
 import MainNav from "./pages/MainNav";
 import Collection from "./pages/Collection";
 import Attributes from "./containers/Attributes";
+import { useLocation } from "react-router-dom";
 
 function App() {
+  const { state } = useLocation();
+  const { collectionId } = state || {};
+  console.log(state);
+
   useEffect(() => {
     axios.get("/getuser").then((_res) => console.log("Logged in!"));
   }, []);
@@ -22,8 +27,12 @@ function App() {
       <div>
         <Routes>
           <Route index element={<Collection />} />
-          <Route path="collection" element={<Collection />} />
-          <Route path="attribute" element={<Attributes collectionId={32} />} />
+          <Route path="collection" element={<Collection />}>
+            <Route
+              path="attribute"
+              element={<Attributes collectionId={collectionId} />}
+            />
+          </Route>
         </Routes>
       </div>
     </CollectionProvider>
