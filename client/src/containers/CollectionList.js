@@ -16,7 +16,12 @@ export default function CollectionList() {
 
   const downloadNFT = (collectionId) => {
     axios.get(`/${collectionId}/downloadNFT`).then((res) => {
-      console.log(res);
+      const link = document.createElement("a");
+      link.href = res.data.url;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      console.log(res.data.url);
     });
   };
 
