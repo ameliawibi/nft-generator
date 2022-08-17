@@ -14,6 +14,7 @@ export default function CollectionTable({
   rows,
   deleteCollection,
   handleNavigate,
+  downloadNFT,
 }) {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -59,6 +60,11 @@ export default function CollectionTable({
                 {row.updatedAt}
               </TableCell>
               <TableCell align="right">
+                {row.isNFTGenerated && (
+                  <Button variant="text" onClick={() => downloadNFT(row.id)}>
+                    Download
+                  </Button>
+                )}
                 <Button variant="text" onClick={handleOpen}>
                   Generate NFT
                 </Button>

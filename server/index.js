@@ -30,7 +30,7 @@ app.post("/:collectionId/generateNFT", NFTController.generateNFT);
 
 app.get("/collectionWithNFT", NFTController.getNFTCollections);
 
-app.post("/downloadNFT", NFTController.downloadNFT);
+app.get("/:collectionId/downloadNFT", NFTController.downloadNFT);
 
 app.get(
   "/collection/attribute/:collectionId/gettraits",

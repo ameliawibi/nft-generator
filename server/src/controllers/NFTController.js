@@ -68,7 +68,11 @@ export default {
 
   async downloadNFT(req, res) {
     try {
-      const { collectionName } = req.body;
+      const { collectionId } = req.params;
+
+      const collectionByPk = await model.Collection.findByPk(collectionId);
+
+      const collectionName = collectionByPk.dataValues.collectionName;
 
       const zipFolder = `${req.cookies.userId}/${collectionName}/zippedNFTs/`;
       const sourceFolder = `${req.cookies.userId}/${collectionName}/nft/`;
