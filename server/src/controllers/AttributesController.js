@@ -26,11 +26,11 @@ export default {
   },
 
   async updateTraits(req, res) {
-    const { attributes } = req.body;
-    const attributesJSON = JSON.parse(attributes);
+    const { attributesList } = req.body;
+    //const attributesJSON = JSON.parse(attributes);
     //console.log(attributesJSON[0].id);
     try {
-      const attributesList = await model.Attribute.bulkCreate(attributesJSON, {
+      const attributes = await model.Attribute.bulkCreate(attributesList, {
         updateOnDuplicate: [
           "trait_type",
           "probability",
@@ -39,7 +39,7 @@ export default {
           "collectionId",
         ],
       });
-      res.status(200).json({ message: "Success!", attributesList });
+      res.status(200).json({ message: "Success!", attributes });
     } catch (error) {
       console.log(error);
     }

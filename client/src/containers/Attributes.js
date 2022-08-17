@@ -14,10 +14,10 @@ export default function Attributes({ collectionId }) {
 
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const counts = {};
     let chosenIndex = [];
-    data.attributesList.map((item, index) => {
+    await data.attributesList.map((item, index) => {
       counts[item.trait_type] = counts[item.trait_type]
         ? counts[item.trait_type] + 1
         : 1;
@@ -26,7 +26,7 @@ export default function Attributes({ collectionId }) {
       }
       return chosenIndex;
     });
-    data.attributesList.map((item, index) => {
+    await data.attributesList.map((item, index) => {
       for (let i = 0; i < chosenIndex.length; i++) {
         if (chosenIndex[i] < index && chosenIndex[i + 1] > index) {
           item.probability = data.attributesList[chosenIndex[i]].probability;
@@ -35,6 +35,10 @@ export default function Attributes({ collectionId }) {
       return data;
     });
     console.log(data);
+
+    axios.post("/updatetraits", data).then((res) => {
+      console.log(res);
+    });
   };
 
   useEffect(() => {
