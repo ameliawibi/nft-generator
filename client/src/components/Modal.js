@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useCollection } from "../hooks/useCollection";
 
 const style = {
   position: "absolute",
@@ -23,12 +24,18 @@ export default function BasicModal({
   collectionId,
   collectionName,
 }) {
+  const { isNFTGenerated } = useCollection();
   const { register, handleSubmit } = useForm();
 
-  const onSubmit = (data, e) =>
+  //console.log(`Modal: ${collectionId}`);
+
+  const onSubmit = (data, e) => {
     axios.post(`/${collectionId}/generateNFT`, data).then((res) => {
       console.log(res);
     });
+
+    isNFTGenerated(collectionId);
+  };
 
   const onError = (errors, e) => console.log(errors, e);
 
@@ -43,7 +50,7 @@ export default function BasicModal({
         <form onSubmit={handleSubmit(onSubmit, onError)}>
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Generate NFT
+              Generate NFT #{collectionId}
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               Number of NFTs

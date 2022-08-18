@@ -10,6 +10,7 @@ const actions = {
   INITIALIZE: "INITIALIZE",
   UPLOAD: "UPLOAD",
   DELETE: "DELETE",
+  TOGGLE_GENERATED: "TOGGLE_GENERATED",
 };
 
 function reducer(state, action) {
@@ -31,6 +32,14 @@ function reducer(state, action) {
           (_item, index) => index !== action.payload
         ),
       };
+    case actions.TOGGLE_GENERATED:
+      const updatedFiles = state.collectionList.map((item) =>
+        item.id === action.payload.id ? { ...item, isNFTGenerated: true } : item
+      );
+      console.log(updatedFiles);
+      console.log(action.payload.id);
+
+      return { collectionList: updatedFiles };
     default:
       return state;
   }
@@ -43,6 +52,7 @@ export const CollectionContext = createContext({
   ...initialState,
   uploadCollection: () => Promise.resolve(),
   deleteCollection: () => Promise.resolve(),
+  isNFTGenerated: () => Promise.resolve(),
 });
 
 export const CollectionProvider = ({ children }) => {
@@ -94,6 +104,20 @@ export const CollectionProvider = ({ children }) => {
       });
   };
 
+  const isNFTGenerated = async (collectionId) => {
+    axios
+      .get(`/${collectionId}/getfile`)
+      .then((res) => {
+        if (!res.data.files.isNFTGenerated) {
+          return isNFTGenerated(collectionId);
+        }
+        dispatch({ type: actions.TOGGLE_GENERATED, payload: res.data.files });
+      })
+      .catch((error) => {
+        console.error(error.response);
+      });
+  };
+
   return (
     <CollectionContext.Provider
       value={{
@@ -101,6 +125,7 @@ export const CollectionProvider = ({ children }) => {
         collectionList: state.collectionList,
         uploadCollection,
         deleteCollection,
+        isNFTGenerated,
       }}
     >
       {children}

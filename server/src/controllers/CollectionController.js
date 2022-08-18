@@ -79,6 +79,19 @@ export default {
     }
   },
 
+  async getOneCollection(req, res) {
+    const { collectionId } = req.params;
+    try {
+      const oneCollection = await model.Collection.findByPk(collectionId);
+
+      console.log(oneCollection);
+
+      return res.json({ files: oneCollection });
+    } catch (error) {
+      console.log(error);
+    }
+  },
+
   async getCollection(req, res) {
     try {
       const allCollections = await model.Collection.findAll({});

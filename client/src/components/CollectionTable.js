@@ -16,9 +16,20 @@ export default function CollectionTable({
   handleNavigate,
   downloadNFT,
 }) {
+  const [modalState, setModalState] = useState({
+    open: false,
+    collectionId: "",
+  });
+  const handleOpen = (collectionId) =>
+    setModalState({ open: true, collectionId: collectionId });
+  const handleClose = () => setModalState({ open: false, collectionId: "" });
+
+  //console.log(modalState);
+  /*
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  */
 
   return (
     <TableContainer component={Paper}>
@@ -65,7 +76,7 @@ export default function CollectionTable({
                     Download
                   </Button>
                 )}
-                <Button variant="text" onClick={handleOpen}>
+                <Button variant="text" onClick={() => handleOpen(row.id)}>
                   Generate NFT
                 </Button>
                 <Button variant="text" component="label">
@@ -78,9 +89,9 @@ export default function CollectionTable({
                   />
                 </Button>
                 <BasicModal
-                  open={open}
+                  open={modalState.open}
                   handleClose={handleClose}
-                  collectionId={row.id}
+                  collectionId={modalState.collectionId}
                   collectionName={row.collectionName}
                 />
               </TableCell>

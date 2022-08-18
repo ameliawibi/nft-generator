@@ -11,6 +11,11 @@ export default {
     const { collectionName, num } = req.body;
 
     try {
+      await model.Collection.update(
+        { isNFTGenerated: false },
+        { where: { id: collectionId } }
+      );
+
       const traits = await model.Attribute.findAll({
         where: {
           collectionId: collectionId,

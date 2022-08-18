@@ -26,6 +26,8 @@ app.get("/getuser", AuthController.getUser);
 
 app.get("/getfiles", CollectionController.getCollection);
 
+app.get("/:collectionId/getfile", CollectionController.getOneCollection);
+
 app.post("/:collectionId/generateNFT", NFTController.generateNFT);
 
 app.get("/collectionWithNFT", NFTController.getNFTCollections);
