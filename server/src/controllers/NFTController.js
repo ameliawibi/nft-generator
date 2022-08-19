@@ -5,6 +5,7 @@ import generateNFTs from "../utils/generateNFTs";
 import zipNFTs from "../utils/zipNFTs";
 import { listOfObjects } from "../utils/randomlySelectLayers";
 import { getFileExt } from "../utils/fileName";
+import loadJSON from "../utils/loadJson";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
@@ -92,13 +93,21 @@ export default {
       } else {
         imageList.push(item);
       }
-
-      imageList.map(function (obj, index) {
-        imageList[index].jsonUrl = jsonList[index].SignedUrl;
-      });
     });
 
-    res.status(200).json({ message: "Your NFTs", imageList });
+    const pushMetadataToImageList = async () => {
+      Promise.all(
+        imageList.map(async (_obj, index) => {
+          imageList[index].jsonContent = await loadJSON(
+            jsonList[index].SignedUrl,
+            "jsonp"
+          );
+        })
+      ).then((_response) =>
+        res.status(200).json({ message: "Your NFTs", imageList })
+      );
+    };
+    await pushMetadataToImageList();
   },
 
   async downloadNFT(req, res) {
