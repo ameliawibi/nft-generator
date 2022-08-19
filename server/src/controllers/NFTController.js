@@ -3,6 +3,9 @@ import model from "../models";
 import generateContents from "../utils/generateContents";
 import generateNFTs from "../utils/generateNFTs";
 import zipNFTs from "../utils/zipNFTs";
+import { listOfObjects } from "../utils/randomlySelectLayers";
+import { getFileExt } from "../utils/fileName";
+
 const bucketName = process.env.AWS_BUCKET_NAME;
 
 export default {
@@ -65,10 +68,37 @@ export default {
         ...Item.dataValues,
       }));
 
-      res.status(200).json({ message: "Your NFTs", NFTList });
+      res.status(200).json({ message: "Your Collections", NFTList });
     } catch (error) {
       console.log(error);
     }
+  },
+
+  async getNFTfromOneCollection(req, res) {
+    const { collectionId } = req.params;
+
+    const collectionList = await model.Collection.findByPk(collectionId);
+
+    const NFTArr = await listOfObjects(
+      `${req.cookies.userId}/${collectionList.dataValues.collectionName}/nft/`
+    );
+
+    let jsonList = [];
+    let imageList = [];
+    NFTArr.forEach((item) => {
+      console.log(item);
+      if (getFileExt(item.Key) === ".json") {
+        jsonList.push(item);
+      } else {
+        imageList.push(item);
+      }
+
+      imageList.map(function (obj, index) {
+        imageList[index].jsonUrl = jsonList[index].SignedUrl;
+      });
+    });
+
+    res.status(200).json({ message: "Your NFTs", imageList });
   },
 
   async downloadNFT(req, res) {
