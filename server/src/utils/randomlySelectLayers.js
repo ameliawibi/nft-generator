@@ -6,7 +6,7 @@ const bucketName = process.env.AWS_BUCKET_NAME;
 //const layers = content.layers;
 //const prefix = "1/layers.zip/";
 
-async function listOfObjects(folder) {
+export async function listOfObjects(folder) {
   return new Promise((resolve, reject) => {
     s3.listObjects(
       {
@@ -35,7 +35,7 @@ async function listOfObjects(folder) {
   });
 }
 
-async function getLayersUrl(fileShortName, data) {
+export async function getLayersUrl(fileShortName, data) {
   let layersUrl = [];
 
   data.forEach((item) =>
@@ -69,7 +69,7 @@ function pickWeighted(mt, options) {
   }
 }
 
-export default async function randomlySelectLayers(layersArr, folder) {
+export async function randomlySelectLayers(layersArr, folder) {
   const mt = MersenneTwister19937.autoSeed();
 
   let imagesURL = [];

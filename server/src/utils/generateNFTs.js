@@ -2,7 +2,7 @@ import mergeImages from "merge-images";
 import { Canvas, Image } from "canvas";
 import { s3 } from "../../s3";
 import path from "path";
-import randomlySelectLayers from "./randomlySelectLayers";
+import { randomlySelectLayers } from "./randomlySelectLayers";
 import emptyNFTFolder from "./emptyNFTFolder";
 import uploadJsonToS3 from "./uploadJsonToS3";
 

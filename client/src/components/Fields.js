@@ -4,6 +4,7 @@ import "./Fields.css";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
 
 export default function Fields({ control, register, defaultValues, errors }) {
   const { fields } = useFieldArray({
@@ -80,6 +81,11 @@ export default function Fields({ control, register, defaultValues, errors }) {
                   <Typography component="div" variant="h5">
                     {item.trait_type}
                   </Typography>
+                  <Avatar
+                    alt={item.subtrait}
+                    src={item.signedURL}
+                    sx={{ width: 48, height: 48 }}
+                  />
                   <input
                     name={`attributesList[${index}].subtrait`}
                     {...register(`attributesList[${index}].subtrait`, {
