@@ -12,7 +12,11 @@ const bucketName = process.env.AWS_BUCKET_NAME;
 export default {
   async generateNFT(req, res) {
     const { collectionId } = req.params;
-    const { collectionName, num } = req.body;
+    const { num } = req.body;
+
+    const collectionList = await model.Collection.findByPk(collectionId);
+
+    const collectionName = collectionList.dataValues.collectionName;
 
     try {
       await model.Collection.update(
