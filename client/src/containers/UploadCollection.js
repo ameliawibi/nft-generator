@@ -21,7 +21,7 @@ export default function UploadCollection() {
     // Update the formData object
 
     formData.append("file", selectedFile);
-    //console.log(formData);
+
     uploadCollection(formData, setMessage);
   };
 

@@ -27,8 +27,6 @@ export default function BasicModal({
   const { isNFTGenerated } = useCollection();
   const { register, handleSubmit } = useForm();
 
-  //console.log(`Modal: ${collectionId}`);
-
   const onSubmit = (data, e) => {
     axios.post(`/${collectionId}/generateNFT`, data).then((res) => {
       console.log(res);

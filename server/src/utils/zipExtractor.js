@@ -37,7 +37,7 @@ export const extractZip = (bucketName, buffer, collectionName, userId) => {
             readStream.pipe(writeStream);
             promise.then(() => {
               paths.push(entry.fileName);
-              //console.log(paths);
+
               console.log(entry.fileName + " Uploaded successfully!");
 
               zipfile.readEntry();
@@ -47,7 +47,6 @@ export const extractZip = (bucketName, buffer, collectionName, userId) => {
       });
 
       zipfile.on("end", () => {
-        //console.log(paths);
         const objJson = createObjectsFromPathArrays();
         resolve(objJson);
       });
@@ -77,11 +76,11 @@ function findSubPaths(path, pathArray) {
 // Build tree recursively
 function buildTree(path) {
   path = path || "";
-  //console.log(path)
+
   let nodeList = [];
   findSubPaths(path, paths).forEach(function (subPath) {
     let nodeName = getFilename(subPath);
-    //console.log(nodeName);
+
     if (/\/$/.test(subPath) && nodeName) {
       let node = {};
       node[nodeName] = buildTree(subPath);
@@ -97,7 +96,6 @@ function createObjectsFromPathArrays() {
   // Build tree from root
   let tree = buildTree();
 
-  //console.log(tree);
   // By default, tree is an array
   // If it contains only one element which is an object,
   // return this object instead to match OP request
@@ -105,13 +103,6 @@ function createObjectsFromPathArrays() {
     tree = tree[0];
   }
   // Serialize tree for debug purposes
-  //console.log(tree);
-  //console.log(JSON.stringify(tree, null, 2));
 
   return JSON.stringify(tree, null, 2);
-  /*fs.writeFileSync(
-    path.join(outputPath, `layers.json`),
-    JSON.stringify(tree, null, 2)
-  );
-  */
 }

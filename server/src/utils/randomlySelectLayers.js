@@ -2,10 +2,6 @@ import { s3 } from "../../s3";
 import { MersenneTwister19937, bool, real } from "random-js";
 const bucketName = process.env.AWS_BUCKET_NAME;
 
-//const content = require("../poc/content.json");
-//const layers = content.layers;
-//const prefix = "1/layers.zip/";
-
 export async function listOfObjects(folder) {
   return new Promise((resolve, reject) => {
     s3.listObjects(
@@ -26,9 +22,8 @@ export async function listOfObjects(folder) {
             });
             updatedData[index].SignedUrl = urlToAdd;
           });
-          //console.log(updatedData);
+
           resolve(updatedData);
-          //return updatedData;
         }
       }
     );
@@ -42,13 +37,9 @@ export async function getLayersUrl(fileShortName, data) {
     layersUrl.push({ fileName: item.Key, signedUrl: item.SignedUrl })
   );
 
-  //console.log(layersUrl);
-
   const found = layersUrl
     .filter((item) => item.fileName.includes(fileShortName))
     .map((item) => item.signedUrl);
-
-  //console.log(found[0]);
 
   return found[0];
 }
@@ -84,8 +75,6 @@ export async function randomlySelectLayers(layersArr, folder) {
       imagesURL.push(foundUrl);
     }
   }
-  console.log(selectedTraits);
-  console.log(imagesURL);
 
   return {
     imagesURL,

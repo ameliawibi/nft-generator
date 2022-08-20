@@ -34,7 +34,6 @@ export default {
             : attribute;
         }
       }
-      //console.log(attributesList);
 
       res.status(200).json({
         message: "Success!",
@@ -47,8 +46,7 @@ export default {
 
   async updateTraits(req, res) {
     const { attributesList } = req.body;
-    //const attributesJSON = JSON.parse(attributes);
-    //console.log(attributesJSON[0].id);
+
     try {
       const attributes = await model.Attribute.bulkCreate(attributesList, {
         updateOnDuplicate: [

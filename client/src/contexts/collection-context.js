@@ -36,8 +36,6 @@ function reducer(state, action) {
       const updatedFiles = state.collectionList.map((item) =>
         item.id === action.payload.id ? { ...item, isNFTGenerated: true } : item
       );
-      console.log(updatedFiles);
-      console.log(action.payload.id);
 
       return { collectionList: updatedFiles };
     default:
@@ -71,14 +69,12 @@ export const CollectionProvider = ({ children }) => {
   if (!state) return null;
 
   const uploadCollection = async (formData, setMessage) => {
-    console.log(formData);
     axios
       .post("/uploadfile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((res) => {
         if (res) {
-          //console.log(res.data.files);
           setMessage("File uploaded successfully");
           dispatch({
             type: actions.UPLOAD,
@@ -96,7 +92,6 @@ export const CollectionProvider = ({ children }) => {
     axios
       .delete(`/${collectionId}/${collectionName}/delete`)
       .then((res) => {
-        console.log(res);
         dispatch({ type: actions.DELETE, payload: index });
       })
       .catch((error) => {

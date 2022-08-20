@@ -11,7 +11,7 @@ import AttributesController from "./src/controllers/AttributesController";
 const PORT = process.env.PORT || 3001;
 const app = express();
 app.use(cookieParser());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true, limit: "90mb" }));
 app.use(express.json());
 app.use(methodOverride("_method"));
 

@@ -34,7 +34,6 @@ export default function Attributes({ collectionId }) {
       }
       return data;
     });
-    console.log(data);
 
     axios.post("/updatetraits", data).then((res) => {
       console.log(res);

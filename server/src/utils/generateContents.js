@@ -9,7 +9,7 @@ export default async function generateContents(layers) {
       probability: element.probability,
       options: [],
     };
-    //console.log(appended.has(JSON.stringify(objToPush)));
+
     if (appended.has(JSON.stringify(objToPush))) {
       continue;
     } else {

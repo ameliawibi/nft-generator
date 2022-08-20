@@ -30,13 +30,6 @@ export default function CollectionTable({
     setModalState({ open: true, collectionId: collectionId });
   const handleClose = () => setModalState({ open: false, collectionId: "" });
 
-  //console.log(modalState);
-  /*
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  */
-
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

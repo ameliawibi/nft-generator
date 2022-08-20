@@ -4,10 +4,6 @@ import stream from "stream";
 import archiver from "archiver";
 const bucketName = process.env.AWS_BUCKET_NAME;
 
-//const sourceFolder = "1/layers.zip/nft/";
-//const zipFolder = "1/layers.zip/zippedNFTs";
-//const zipFileName = "firstCollection";
-
 const filesArray = [];
 
 export default async function zipNFTs(zipFolder, zipFileName, sourceFolder) {
@@ -26,9 +22,7 @@ export default async function zipNFTs(zipFolder, zipFileName, sourceFolder) {
 }
 
 async function zipFunction(zipFolder, zipFileName, sourceFolder) {
-  console.log(filesArray);
   const s3FileDwnldStreams = filesArray.map((item) => {
-    console.log(`${sourceFolder}${item}`);
     const pass = s3
       .getObject({ Bucket: bucketName, Key: `${sourceFolder}${item}` })
       .createReadStream();

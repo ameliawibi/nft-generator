@@ -11,7 +11,6 @@ const bucketName = process.env.AWS_BUCKET_NAME;
 async function mergeLayersAndSave(layers, outputFile) {
   const image = await mergeImages(layers, { Canvas: Canvas, Image: Image });
   const nftUrl = await uploadToS3(image, outputFile);
-  //console.log(nftUrl);
 
   return nftUrl;
 }
@@ -20,7 +19,7 @@ async function uploadToS3(base64PngImage, filename) {
   return new Promise((resolve, reject) => {
     let base64 = base64PngImage.split(",")[1];
     let imageBuffer = new Buffer.from(base64, "base64");
-    console.log(imageBuffer);
+
     s3.upload(
       {
         Bucket: bucketName,
@@ -40,7 +39,7 @@ async function uploadToS3(base64PngImage, filename) {
             Expires: 60 * 24,
           });
           console.log("succesfully uploaded the image!");
-          //console.log(nftUrl);
+
           resolve(nftUrl);
         }
       }
@@ -84,7 +83,6 @@ export default async function generateNFTs(
       );
 
       uploadJsonToS3(metadata, `${i}.json`, NFTfolder);
-      console.log(metadata);
     }
   }
 }
@@ -111,5 +109,3 @@ function generateMetadata(
     name: `${collectionName} #${tokenId}`,
   };
 }
-
-//generateNFTs(2, "1/layers.zip/nft/", layers, prefix);

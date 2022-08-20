@@ -7,10 +7,9 @@ const bucketName = process.env.AWS_BUCKET_NAME;
 
 export default {
   async uploadCollection(req, res) {
-    res.connection.setTimeout(5 * 60 * 1000);
+    res.connection.setTimeout(15 * 60 * 1000);
 
     let file = req.file;
-    //console.log(file.key);
 
     if (file == null) {
       return res.status(400).json({ message: "Please choose the file" });
@@ -48,9 +47,10 @@ export default {
           req.cookies.userId
         );
 
-        const layersJson = JSON.parse(result).layers;
+        const layersJson = await JSON.parse(result).layers;
 
         let objectKeys = [];
+
         for (let i = 0; i < layersJson.length; i++) {
           objectKeys.push(...Object.keys(layersJson[i]));
           for (const element of layersJson[i][objectKeys[i]]) {
@@ -74,6 +74,7 @@ export default {
           files: newCollection,
         });
       } catch (error) {
+        console.log(error);
         await t.rollback();
       }
     }
@@ -83,9 +84,6 @@ export default {
     const { collectionId } = req.params;
     try {
       const oneCollection = await model.Collection.findByPk(collectionId);
-
-      console.log(oneCollection);
-
       return res.json({ files: oneCollection });
     } catch (error) {
       console.log(error);
