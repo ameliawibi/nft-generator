@@ -80,7 +80,11 @@ export default function NFT() {
               aria-controls="panel1d-content"
               id="panel1d-header"
             >
-              <Typography>Collection {item.id}</Typography>
+              <Typography>
+                {item.collectionName
+                  .substring(0, item.collectionName.length - 4)
+                  .toUpperCase()}
+              </Typography>
             </AccordionSummary>
             <AccordionDetails>
               {imageList && <ImageList imageData={imageList} />}
