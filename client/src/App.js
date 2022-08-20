@@ -5,6 +5,7 @@ import { CollectionProvider } from "./contexts/collection-context";
 import { Routes, Route } from "react-router-dom";
 import MainNav from "./pages/MainNav";
 import Collection from "./pages/Collection";
+import NFT from "./pages/NFT";
 import Attributes from "./containers/Attributes";
 import { useLocation } from "react-router-dom";
 
@@ -32,6 +33,7 @@ function App() {
             path="/collection/attribute/:collectionId"
             element={<Attributes collectionId={collectionId} />}
           />
+          <Route path="nft" element={<NFT />} />
         </Routes>
       </div>
     </CollectionProvider>
