@@ -14,7 +14,7 @@ function App() {
   const { collectionId } = state || {};
 
   useEffect(() => {
-    axios.get("/getuser").then((_res) => console.log("Logged in!"));
+    axios.get("/getuser").then((_res) => console.log);
   }, []);
 
   return (
