@@ -9,6 +9,12 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
 import BasicModal from "../components/Modal";
+import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import dayjs from "dayjs";
+import LocalizedFormat from "dayjs/plugin/localizedFormat";
+
+dayjs.extend(LocalizedFormat);
 
 export default function CollectionTable({
   rows,
@@ -38,9 +44,8 @@ export default function CollectionTable({
           <TableRow>
             <TableCell>#</TableCell>
             <TableCell align="right">Collection</TableCell>
-            <TableCell align="right">isNFTGenerated</TableCell>
             <TableCell align="right">Created at</TableCell>
-            <TableCell align="right">Updated at</TableCell>
+            <TableCell align="right">isNFTGenerated</TableCell>
             <TableCell align="right">Action</TableCell>
           </TableRow>
         </TableHead>
@@ -62,31 +67,29 @@ export default function CollectionTable({
                 {row.collectionName}
               </TableCell>
               <TableCell onClick={() => handleNavigate(row.id)} align="right">
-                {row.isNFTGenerated.toString()}
+                {dayjs(row.createdAt).format("L LT")}
               </TableCell>
               <TableCell onClick={() => handleNavigate(row.id)} align="right">
-                {row.createdAt}
-              </TableCell>
-              <TableCell onClick={() => handleNavigate(row.id)} align="right">
-                {row.updatedAt}
+                {row.isNFTGenerated ? "Yes" : "No"}
               </TableCell>
               <TableCell align="right">
                 {row.isNFTGenerated && (
                   <Button variant="text" onClick={() => downloadNFT(row.id)}>
-                    Download
+                    <CloudDownloadIcon />
                   </Button>
                 )}
-                <Button variant="text" onClick={() => handleOpen(row.id)}>
-                  Generate NFT
-                </Button>
+
                 <Button variant="text" component="label">
-                  Delete
+                  <DeleteForeverIcon />
                   <button
                     hidden
                     onClick={() =>
                       deleteCollection(row.id, row.collectionName, index)
                     }
                   />
+                </Button>
+                <Button variant="text" onClick={() => handleOpen(row.id)}>
+                  Generate NFT
                 </Button>
                 <BasicModal
                   open={modalState.open}

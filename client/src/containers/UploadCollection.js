@@ -26,8 +26,7 @@ export default function UploadCollection() {
   };
 
   return (
-    <div>
-      <h1>Upload collection</h1>
+    <div className="flex justify-end my-4">
       <UploadComponent
         onChange={(e) => onChange(e)}
         onSubmit={(e) => uploadFile(e)}

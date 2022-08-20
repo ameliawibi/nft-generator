@@ -19,12 +19,12 @@ function App() {
 
   return (
     <CollectionProvider>
-      <div className="App">
+      <div>
         <Routes>
           <Route path="/*" element={<MainNav />} />
         </Routes>
       </div>
-      <div>
+      <div className="mx-10 my-6">
         <Routes>
           <Route index element={<Collection />} />
           <Route path="collection" element={<Collection />} />

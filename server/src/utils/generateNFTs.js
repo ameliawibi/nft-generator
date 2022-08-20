@@ -98,7 +98,10 @@ function generateMetadata(
 ) {
   let attributes = [];
   for (const [trait_type, value] of Object.entries(traits)) {
-    attributes.push({ trait_type, value });
+    attributes.push({
+      trait_type,
+      value: value.substring(0, value.length - 4),
+    });
   }
   return {
     attributes,

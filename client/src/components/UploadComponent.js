@@ -6,7 +6,7 @@ export default function UploadComponent({ onChange, onSubmit }) {
   return (
     <form method="post" action="#" onSubmit={onSubmit}>
       <Button variant="text" component="label">
-        Upload
+        Select ZIP File
         <input
           hidden
           accept="zip,application/octet-stream,application/zip,application/x-zip,application/x-zip-compressed"
@@ -15,7 +15,7 @@ export default function UploadComponent({ onChange, onSubmit }) {
         />
       </Button>
       <Button variant="contained" component="label">
-        Submit
+        Upload
         <button hidden type="submit"></button>
       </Button>
     </form>

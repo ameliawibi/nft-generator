@@ -63,7 +63,13 @@ export default function Attributes({ collectionId }) {
       {defaultValues && (
         <form>
           <FieldArray {...{ control, register, defaultValues, errors }} />
-          <Button onClick={handleSubmit(onSubmit)}>Submit</Button>
+          <Button
+            variant="contained"
+            sx={{ ml: 2, my: 2 }}
+            onClick={handleSubmit(onSubmit)}
+          >
+            Submit
+          </Button>
         </form>
       )}
     </div>

@@ -2,6 +2,7 @@ import CollectionTable from "../components/CollectionTable";
 import { useCollection } from "../hooks/useCollection";
 import { useNavigate, Outlet } from "react-router-dom";
 import axios from "axios";
+import UploadCollection from "./UploadCollection";
 
 export default function CollectionList() {
   const { collectionList, deleteCollection } = useCollection();
@@ -26,8 +27,8 @@ export default function CollectionList() {
   };
 
   return (
-    <>
-      <h1>Collection List</h1>
+    <div>
+      <UploadCollection />
       <CollectionTable
         rows={collectionList}
         deleteCollection={deleteCollection}
@@ -35,6 +36,6 @@ export default function CollectionList() {
         downloadNFT={downloadNFT}
       />
       <Outlet />
-    </>
+    </div>
   );
 }

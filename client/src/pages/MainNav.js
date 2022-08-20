@@ -14,8 +14,8 @@ export default function MainNav() {
   return (
     <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
       <Tabs value={value} onChange={handleChange} centered>
-        <Tab component={Link} label="Collections" to="collection" />
-        <Tab component={Link} label="NFTs" to="nft" />
+        <Tab component={Link} label="Collection" to="collection" />
+        <Tab component={Link} label="NFT" to="nft" />
       </Tabs>
     </Box>
   );

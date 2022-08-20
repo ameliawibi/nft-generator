@@ -35,9 +35,18 @@ export default function Fields({ control, register, defaultValues, errors }) {
             return (
               <Box
                 key={index}
-                sx={{ minWidth: 275, maxWidth: 300, mx: 2, my: 4 }}
+                sx={{
+                  minWidth: 275,
+                  maxWidth: 300,
+                  mx: 2,
+                  my: 4,
+                  display: "inline-flex",
+                  boxShadow:
+                    "0px 7px 8px -4px rgb(0 0 0 / 20%), 0px 12px 17px 2px rgb(0 0 0 / 14%), 0px 5px 22px 4px rgb(0 0 0 / 12%)",
+                  borderRadius: "16px",
+                }}
               >
-                <Card variant="outlined" sx={{ p: 1 }}>
+                <Card variant="outlined" sx={{ p: 1, borderRadius: "16px" }}>
                   <li key={item.id}>
                     <input
                       name={`attributesList[${index}].trait_type`}
@@ -74,9 +83,18 @@ export default function Fields({ control, register, defaultValues, errors }) {
           return (
             <Box
               key={index}
-              sx={{ minWidth: 275, maxWidth: 300, mx: 2, my: 4 }}
+              sx={{
+                minWidth: 275,
+                maxWidth: 300,
+                mx: 2,
+                my: 4,
+                display: "inline-flex",
+                boxShadow:
+                  "0px 7px 8px -4px rgb(0 0 0 / 20%), 0px 12px 17px 2px rgb(0 0 0 / 14%), 0px 5px 22px 4px rgb(0 0 0 / 12%)",
+                borderRadius: "16px",
+              }}
             >
-              <Card variant="outlined" sx={{ p: 2 }}>
+              <Card variant="outlined" sx={{ p: 2, borderRadius: "16px" }}>
                 <li key={item.id}>
                   <Typography component="div" variant="h5">
                     {item.trait_type}
