@@ -49,59 +49,60 @@ export default function CollectionTable({
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
-            <TableRow
-              hover
-              key={row.id}
-              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-            >
-              <TableCell
-                onClick={() => handleNavigate(row.id)}
-                component="th"
-                scope="row"
+          {rows &&
+            rows.map((row, index) => (
+              <TableRow
+                hover
+                key={row.id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                {row.id}
-              </TableCell>
-              <TableCell onClick={() => handleNavigate(row.id)} align="right">
-                {row.collectionName}
-              </TableCell>
-              <TableCell onClick={() => handleNavigate(row.id)} align="right">
-                {dayjs(row.createdAt).format("L LT")}
-              </TableCell>
-              <TableCell onClick={() => handleNavigate(row.id)} align="right">
-                {row.isNFTGenerated ? "Yes" : "No"}
-              </TableCell>
-              <TableCell align="right">
-                {row.isNFTGenerated && (
-                  <Button variant="text" onClick={() => downloadNFT(row.id)}>
-                    <CloudDownloadIcon />
-                  </Button>
-                )}
-
-                <Button variant="text" component="label">
-                  <DeleteForeverIcon />
-                  <button
-                    hidden
-                    onClick={() =>
-                      deleteCollection(row.id, row.collectionName, index)
-                    }
-                  />
-                </Button>
-                <Button
-                  variant="text"
-                  onClick={() => handleOpen(row.id, row.collectionName)}
+                <TableCell
+                  onClick={() => handleNavigate(row.id)}
+                  component="th"
+                  scope="row"
                 >
-                  Generate NFT
-                </Button>
-                <BasicModal
-                  open={modalState.open}
-                  handleClose={handleClose}
-                  collectionId={modalState.collectionId}
-                  collectionName={modalState.collectionName}
-                />
-              </TableCell>
-            </TableRow>
-          ))}
+                  {row.id}
+                </TableCell>
+                <TableCell onClick={() => handleNavigate(row.id)} align="right">
+                  {row.collectionName}
+                </TableCell>
+                <TableCell onClick={() => handleNavigate(row.id)} align="right">
+                  {dayjs(row.createdAt).format("L LT")}
+                </TableCell>
+                <TableCell onClick={() => handleNavigate(row.id)} align="right">
+                  {row.isNFTGenerated ? "Yes" : "No"}
+                </TableCell>
+                <TableCell align="right">
+                  {row.isNFTGenerated && (
+                    <Button variant="text" onClick={() => downloadNFT(row.id)}>
+                      <CloudDownloadIcon />
+                    </Button>
+                  )}
+
+                  <Button variant="text" component="label">
+                    <DeleteForeverIcon />
+                    <button
+                      hidden
+                      onClick={() =>
+                        deleteCollection(row.id, row.collectionName, index)
+                      }
+                    />
+                  </Button>
+                  <Button
+                    variant="text"
+                    onClick={() => handleOpen(row.id, row.collectionName)}
+                  >
+                    Generate NFT
+                  </Button>
+                  <BasicModal
+                    open={modalState.open}
+                    handleClose={handleClose}
+                    collectionId={modalState.collectionId}
+                    collectionName={modalState.collectionName}
+                  />
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>

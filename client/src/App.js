@@ -1,11 +1,12 @@
-import "./App.css";
+import { AuthProvider } from "./contexts/auth-context";
 import { CollectionProvider } from "./contexts/collection-context";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import MainNav from "./pages/MainNav";
 import Collection from "./pages/Collection";
 import NFT from "./pages/NFT";
 import Attributes from "./containers/Attributes";
-import { useLocation } from "react-router-dom";
+import Login from "./pages/Login";
+import { ProtectedRoute } from "./pages/ProtectedRoute";
 
 function App() {
   const { state } = useLocation();
@@ -17,25 +18,43 @@ function App() {
   */
 
   return (
-    <CollectionProvider>
-      <div>
-        <Routes>
-          <Route path="/*" element={<MainNav />} />
-        </Routes>
-      </div>
-      <div className="mx-10 my-6">
-        <Routes>
-          <Route index element={<Collection />} />
-          <Route path="collection" element={<Collection />} />
-          <Route
-            exact
-            path="/collection/attribute/:collectionId"
-            element={<Attributes collectionId={collectionId} />}
-          />
-          <Route path="nft" element={<NFT />} />
-        </Routes>
-      </div>
-    </CollectionProvider>
+    <AuthProvider>
+      <h1>React Router</h1>
+      <MainNav />
+      <CollectionProvider>
+        <div className="mx-10 my-6">
+          <Routes>
+            <Route index element={<Login />} />
+            <Route path="login" element={<Login />} />
+            <Route
+              path="collection"
+              element={
+                <ProtectedRoute>
+                  <Collection />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              exact
+              path="/collection/attribute/:collectionId"
+              element={
+                <ProtectedRoute>
+                  <Attributes collectionId={collectionId} />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="nft"
+              element={
+                <ProtectedRoute>
+                  <NFT />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+        </div>
+      </CollectionProvider>
+    </AuthProvider>
   );
 }
 

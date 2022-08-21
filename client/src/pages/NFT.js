@@ -7,6 +7,7 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ImageList from "../components/ImageList";
 import axios from "axios";
+import { useAuth } from "../hooks/useAuth";
 
 const Accordion = styled((props) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -45,6 +46,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export default function NFT() {
+  const { token } = useAuth();
   const [expanded, setExpanded] = useState("panel1");
   const [NFTList, setNFTList] = useState(null);
   const [imageList, setImageList] = useState(null);
@@ -69,6 +71,7 @@ export default function NFT() {
 
   return (
     <div>
+      <p>Authenticated as {token} </p>
       {NFTList &&
         NFTList.map((item) => (
           <Accordion
