@@ -1,6 +1,4 @@
 import "./App.css";
-import { useEffect } from "react";
-import axios from "axios";
 import { CollectionProvider } from "./contexts/collection-context";
 import { Routes, Route } from "react-router-dom";
 import MainNav from "./pages/MainNav";
@@ -13,9 +11,10 @@ function App() {
   const { state } = useLocation();
   const { collectionId } = state || {};
 
-  useEffect(() => {
+  /*useEffect(() => {
     axios.get("/getuser").then((_res) => console.log);
   }, []);
+  */
 
   return (
     <CollectionProvider>
