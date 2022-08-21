@@ -7,10 +7,16 @@ import NFT from "./pages/NFT";
 import Attributes from "./containers/Attributes";
 import Login from "./pages/Login";
 import { ProtectedRoute } from "./pages/ProtectedRoute";
+import { useState, useEffect } from "react";
 
 function App() {
   const { state } = useLocation();
   const { collectionId } = state || {};
+  const [currPath, setCurrPath] = useState(window.location.pathname);
+
+  useEffect(() => {
+    setCurrPath(window.location.pathname);
+  }, []);
 
   /*useEffect(() => {
     axios.get("/getuser").then((_res) => console.log);
@@ -19,8 +25,7 @@ function App() {
 
   return (
     <AuthProvider>
-      <h1>React Router</h1>
-      <MainNav />
+      {currPath !== "/login" && <MainNav />}
       <CollectionProvider>
         <div className="mx-10 my-6">
           <Routes>

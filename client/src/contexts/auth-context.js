@@ -1,11 +1,7 @@
 import { useState, createContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
-
-const fakeAuth = () =>
-  new Promise((resolve) => {
-    setTimeout(() => resolve("2342f2f1d131rf12"), 250);
-  });
+import getCookie from "../utils/getCookie";
 
 export const AuthContext = createContext(null);
 
@@ -13,7 +9,7 @@ export function AuthProvider({ children }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(getCookie("x-access-token"));
 
   const handleLogin = async (data) => {
     const response = await axios.post("/auth/signin", data);
