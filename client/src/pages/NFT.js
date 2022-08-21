@@ -68,11 +68,10 @@ export default function NFT() {
       setImageList(res.data.imageList);
     });
   };
-
   return (
     <div>
-      <p>Authenticated as {token} </p>
-      {NFTList &&
+      {token &&
+        NFTList &&
         NFTList.map((item) => (
           <Accordion
             key={item.id}

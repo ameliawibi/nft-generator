@@ -1,8 +1,8 @@
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import axios from "axios";
+import "./form.css";
 
 export default function SignUp() {
   const { register, handleSubmit } = useForm();
@@ -20,20 +20,31 @@ export default function SignUp() {
 
   return (
     <>
-      <h2>Sign up page (Public)</h2>
+      <h1 className="FormTitle" sx={{ m: 2 }}>
+        Sign Up
+      </h1>
       <form onSubmit={handleSubmit(onSignup, onError)}>
-        <Typography id="name" sx={{ m: 2 }}>
-          Name
-        </Typography>
-        <input {...register("name")} />
-        <Typography id="email" sx={{ m: 2 }}>
-          Email
-        </Typography>
-        <input {...register("email")} />
-        <Typography id="email" sx={{ m: 2 }}>
-          Password
-        </Typography>
-        <input {...register("password")} />
+        <label className="Label">Name</label>
+        <input
+          className="Input mb-6"
+          {...register("name", {
+            required: true,
+          })}
+        />
+        <label className="Label">Email</label>
+        <input
+          className="Input mb-6"
+          {...register("email", {
+            required: true,
+          })}
+        />
+        <label className="Label">Password</label>
+        <input
+          className="Input mb-6"
+          {...register("password", {
+            required: true,
+          })}
+        />
         <Button variant="text" component="label">
           Sign up
           <button hidden type="submit" />

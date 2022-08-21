@@ -46,7 +46,15 @@ export default function Fields({ control, register, defaultValues, errors }) {
                   borderRadius: "16px",
                 }}
               >
-                <Card variant="outlined" sx={{ p: 1, borderRadius: "16px" }}>
+                <Card
+                  variant="outlined"
+                  sx={{
+                    p: 1,
+                    minWidth: 275,
+                    maxWidth: 300,
+                    borderRadius: "16px",
+                  }}
+                >
                   <li key={item.id}>
                     <input
                       name={`attributesList[${index}].trait_type`}
@@ -94,7 +102,15 @@ export default function Fields({ control, register, defaultValues, errors }) {
                 borderRadius: "16px",
               }}
             >
-              <Card variant="outlined" sx={{ p: 2, borderRadius: "16px" }}>
+              <Card
+                variant="outlined"
+                sx={{
+                  p: 2,
+                  minWidth: 275,
+                  maxWidth: 300,
+                  borderRadius: "16px",
+                }}
+              >
                 <li key={item.id}>
                   <Typography component="div" variant="h5">
                     {item.trait_type}

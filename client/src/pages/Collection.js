@@ -3,10 +3,5 @@ import { useAuth } from "../hooks/useAuth";
 
 export default function Collection() {
   const { token } = useAuth();
-  return (
-    <>
-      <div>Authenticated as {token} </div>
-      <CollectionList />
-    </>
-  );
+  return <>{token && <CollectionList />}</>;
 }

@@ -26,8 +26,8 @@ function App() {
 
   return (
     <AuthProvider>
-      {currPath !== "/login" && currPath !== "/signup" && <MainNav />}
       <CollectionProvider>
+        {currPath !== "/login" && currPath !== "/signup" && <MainNav />}
         <div className="mx-10 my-6">
           <Routes>
             <Route index element={<Login />} />

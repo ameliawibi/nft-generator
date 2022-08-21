@@ -17,7 +17,6 @@ export function AuthProvider({ children }) {
     const origin = location.state?.from?.pathname || "/collection";
 
     if (response.status === 200) {
-      console.log("Login success");
       setToken(response.data.accessToken);
       navigate(origin);
     }
