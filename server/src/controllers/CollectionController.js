@@ -92,7 +92,11 @@ export default {
 
   async getCollection(req, res) {
     try {
-      const allCollections = await model.Collection.findAll({});
+      const allCollections = await model.Collection.findAll({
+        where: {
+          userId: req.cookies.userId,
+        },
+      });
       return res.json({ files: allCollections });
     } catch (error) {
       console.log(error);

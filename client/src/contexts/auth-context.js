@@ -1,5 +1,6 @@
 import { useState, createContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const fakeAuth = () =>
   new Promise((resolve) => {
@@ -14,12 +15,16 @@ export function AuthProvider({ children }) {
 
   const [token, setToken] = useState(null);
 
-  const handleLogin = async () => {
-    const tokenAuth = await fakeAuth();
+  const handleLogin = async (data) => {
+    const response = await axios.post("/auth/signin", data);
 
-    setToken(tokenAuth);
     const origin = location.state?.from?.pathname || "/collection";
-    navigate(origin);
+
+    if (response.status === 200) {
+      console.log("Login success");
+      setToken(response.data.accessToken);
+      navigate(origin);
+    }
   };
 
   const handleLogout = () => {
