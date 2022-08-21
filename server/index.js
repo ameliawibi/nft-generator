@@ -33,6 +33,8 @@ app.post("/auth/signup", authJwt.verifySignUp, AuthController.signUp);
 
 app.post("/auth/signin", AuthController.signIn);
 
+app.get("/auth/logout", AuthController.getLogout);
+
 app.get("/getfiles", authJwt.verifyToken, CollectionController.getCollection);
 
 app.get(

@@ -70,6 +70,18 @@ export default {
     }
   },
 
+  async getLogout(_req, res) {
+    try {
+      res.clearCookie("x-access-token");
+      res.clearCookie("userId");
+      res.status(200).send({
+        message: "Logged out!",
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  },
+
   async getUser(_req, res) {
     try {
       const user = await User.findOne({

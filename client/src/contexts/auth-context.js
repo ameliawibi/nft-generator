@@ -22,8 +22,11 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const handleLogout = () => {
-    setToken(null);
+  const handleLogout = async () => {
+    const response = await axios.get("/auth/logout");
+    if (response.status === 200) {
+      setToken(null);
+    }
   };
 
   const value = {
