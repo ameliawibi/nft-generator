@@ -5,12 +5,10 @@ import Tab from "@mui/material/Tab";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { useCollection } from "../hooks/useCollection";
 
 export default function MainNav() {
   const [value, setValue] = useState(0);
   const { onLogout, token } = useAuth();
-  const { resetCollection } = useCollection();
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -31,13 +29,7 @@ export default function MainNav() {
             <Tab component={Link} label="Collection" to="collection" />
             <Tab component={Link} label="NFT" to="nft" />
           </Tabs>
-          <Button
-            variant="contained"
-            onClick={() => {
-              onLogout();
-              resetCollection();
-            }}
-          >
+          <Button variant="contained" onClick={onLogout}>
             Sign Out
           </Button>
         </Box>

@@ -17,7 +17,8 @@ function App() {
 
   useEffect(() => {
     setCurrPath(window.location.pathname);
-  }, []);
+    // eslint-disable-next-line
+  }, [window.location.pathname]);
 
   return (
     <AuthProvider>

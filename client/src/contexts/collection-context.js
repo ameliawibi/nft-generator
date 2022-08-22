@@ -1,4 +1,4 @@
-import React, { useReducer, createContext } from "react";
+import React, { useReducer, useEffect, createContext } from "react";
 import axios from "axios";
 
 // Step 1: Initial State and Actions
@@ -18,7 +18,6 @@ function reducer(state, action) {
   switch (action.type) {
     case actions.INITIALIZE:
       return {
-        ...state,
         collectionList: action.payload,
       };
     case actions.UPLOAD:
@@ -62,15 +61,6 @@ export const CollectionProvider = ({ children }) => {
   //Here we pass the reducer function and theinitialState to the useReducer hook. This will return state and dispatch. The state will have the initialState. And the dispatch is used to trigger our actions, just like in redux.
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const initialize = async () => {
-    axios.get(`/getfiles`).then((response) => {
-      dispatch({
-        type: actions.INITIALIZE,
-        payload: response.data.files,
-      });
-    });
-  };
-  /*
   useEffect(() => {
     axios.get(`/getfiles`).then((response) => {
       dispatch({
@@ -79,7 +69,15 @@ export const CollectionProvider = ({ children }) => {
       });
     });
   }, []);
-  */
+
+  const initialize = async () => {
+    axios.get(`/getfiles`).then((response) => {
+      dispatch({
+        type: actions.INITIALIZE,
+        payload: response.data.files,
+      });
+    });
+  };
 
   if (!state) return null;
 
