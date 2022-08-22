@@ -19,11 +19,6 @@ function App() {
     setCurrPath(window.location.pathname);
   }, []);
 
-  /*useEffect(() => {
-    axios.get("/getuser").then((_res) => console.log);
-  }, []);
-  */
-
   return (
     <AuthProvider>
       <CollectionProvider>

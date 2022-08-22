@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, createContext } from "react";
+import React, { useReducer, createContext } from "react";
 import axios from "axios";
 
 // Step 1: Initial State and Actions
@@ -11,6 +11,7 @@ const actions = {
   UPLOAD: "UPLOAD",
   DELETE: "DELETE",
   TOGGLE_GENERATED: "TOGGLE_GENERATED",
+  RESET: "RESET",
 };
 
 function reducer(state, action) {
@@ -38,6 +39,8 @@ function reducer(state, action) {
       );
 
       return { collectionList: updatedFiles };
+    case actions.RESET:
+      return { collectionList: [] };
     default:
       return state;
   }
@@ -48,15 +51,26 @@ function reducer(state, action) {
 export const CollectionContext = createContext({
   actions: actions,
   ...initialState,
+  initialize: () => Promise.resolve(),
   uploadCollection: () => Promise.resolve(),
   deleteCollection: () => Promise.resolve(),
   isNFTGenerated: () => Promise.resolve(),
+  resetCollection: () => Promise.resolve(),
 });
 
 export const CollectionProvider = ({ children }) => {
   //Here we pass the reducer function and theinitialState to the useReducer hook. This will return state and dispatch. The state will have the initialState. And the dispatch is used to trigger our actions, just like in redux.
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const initialize = async () => {
+    axios.get(`/getfiles`).then((response) => {
+      dispatch({
+        type: actions.INITIALIZE,
+        payload: response.data.files,
+      });
+    });
+  };
+  /*
   useEffect(() => {
     axios.get(`/getfiles`).then((response) => {
       dispatch({
@@ -65,6 +79,7 @@ export const CollectionProvider = ({ children }) => {
       });
     });
   }, []);
+  */
 
   if (!state) return null;
 
@@ -113,14 +128,20 @@ export const CollectionProvider = ({ children }) => {
       });
   };
 
+  const resetCollection = async () => {
+    dispatch({ type: actions.RESET });
+  };
+
   return (
     <CollectionContext.Provider
       value={{
         actions: actions,
         collectionList: state.collectionList,
+        initialize,
         uploadCollection,
         deleteCollection,
         isNFTGenerated,
+        resetCollection,
       }}
     >
       {children}
