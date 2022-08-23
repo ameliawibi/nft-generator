@@ -22,41 +22,41 @@ function App() {
 
   return (
     <AuthProvider>
-      <CollectionProvider>
-        {currPath !== "/login" && currPath !== "/signup" && <MainNav />}
-        <div className="mx-10 my-6">
-          <Routes>
-            <Route index element={<Login />} />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<SignUp />} />
-            <Route
-              path="collection"
-              element={
+      {currPath !== "/login" && currPath !== "/signup" && <MainNav />}
+      <div className="mx-10 my-6">
+        <Routes>
+          <Route index element={<Login />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<SignUp />} />
+          <Route
+            path="collection"
+            element={
+              <CollectionProvider>
                 <ProtectedRoute>
                   <Collection />
                 </ProtectedRoute>
-              }
-            />
-            <Route
-              exact
-              path="/collection/attribute/:collectionId"
-              element={
-                <ProtectedRoute>
-                  <Attributes collectionId={collectionId} />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="nft"
-              element={
-                <ProtectedRoute>
-                  <NFT />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </div>
-      </CollectionProvider>
+              </CollectionProvider>
+            }
+          />
+          <Route
+            exact
+            path="/collection/attribute/:collectionId"
+            element={
+              <ProtectedRoute>
+                <Attributes collectionId={collectionId} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="nft"
+            element={
+              <ProtectedRoute>
+                <NFT />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
     </AuthProvider>
   );
 }

@@ -40,6 +40,7 @@ export default {
         const params = { Bucket: bucketName, Key: file.key };
 
         const object = await s3.getObject(params).promise();
+
         const result = await extractZip(
           bucketName,
           object.Body,

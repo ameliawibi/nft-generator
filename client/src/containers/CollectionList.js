@@ -2,16 +2,12 @@ import CollectionTable from "../components/CollectionTable";
 import { useCollection } from "../hooks/useCollection";
 import { useNavigate, Outlet } from "react-router-dom";
 import axios from "axios";
-import UploadCollection from "./UploadCollection";
-import { useEffect } from "react";
+
+import UploadNew from "./UploadNew";
 
 export default function CollectionList() {
-  const { initialize, collectionList, deleteCollection } = useCollection();
+  const { collectionList, deleteCollection } = useCollection();
 
-  useEffect(() => {
-    initialize();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const navigate = useNavigate();
 
   const handleNavigate = (collectionId) => {
@@ -31,8 +27,8 @@ export default function CollectionList() {
   };
 
   return (
-    <div>
-      <UploadCollection />
+    <div className="flex flex-col space-y-4">
+      <UploadNew />
       <CollectionTable
         rows={collectionList}
         deleteCollection={deleteCollection}

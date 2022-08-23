@@ -50,7 +50,6 @@ function reducer(state, action) {
 export const CollectionContext = createContext({
   actions: actions,
   ...initialState,
-  initialize: () => Promise.resolve(),
   uploadCollection: () => Promise.resolve(),
   deleteCollection: () => Promise.resolve(),
   isNFTGenerated: () => Promise.resolve(),
@@ -69,15 +68,6 @@ export const CollectionProvider = ({ children }) => {
       });
     });
   }, []);
-
-  const initialize = async () => {
-    axios.get(`/getfiles`).then((response) => {
-      dispatch({
-        type: actions.INITIALIZE,
-        payload: response.data.files,
-      });
-    });
-  };
 
   if (!state) return null;
 
@@ -135,7 +125,6 @@ export const CollectionProvider = ({ children }) => {
       value={{
         actions: actions,
         collectionList: state.collectionList,
-        initialize,
         uploadCollection,
         deleteCollection,
         isNFTGenerated,

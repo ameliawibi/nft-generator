@@ -62,7 +62,7 @@ export default function Fields({ control, register, defaultValues, errors }) {
                         required: true,
                       })}
                       disabled
-                      className="Input"
+                      className="InputDisabled"
                       defaultValue={item.trait_type}
                     />
                     <input
@@ -125,7 +125,7 @@ export default function Fields({ control, register, defaultValues, errors }) {
                     {...register(`attributesList[${index}].subtrait`, {
                       required: true,
                     })}
-                    className="Input"
+                    className="InputDisabled"
                     disabled
                     defaultValue={item.subtrait}
                   />
