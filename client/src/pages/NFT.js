@@ -53,6 +53,7 @@ export default function NFT() {
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
+    setImageList(newExpanded ? null : imageList);
     getAccordionDetails(panel);
   };
 

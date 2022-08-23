@@ -9,7 +9,7 @@ export default async function loadJSON(path, error) {
         if (xhr.status === 200) {
           obj = JSON.parse(xhr.responseText);
         } else {
-          error(xhr);
+          console.log(error);
         }
         resolve(obj);
       }

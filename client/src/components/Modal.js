@@ -25,7 +25,11 @@ export default function BasicModal({
   collectionName,
 }) {
   const { isNFTGenerated } = useCollection();
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
   const onSubmit = (data, e) => {
     axios.post(`/${collectionId}/generateNFT`, data).then((res) => {
@@ -53,7 +57,19 @@ export default function BasicModal({
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               Number of NFTs
             </Typography>
-            <input {...register("num")} />
+            <input
+              name="num"
+              type="number"
+              className="InputModal mb-2"
+              {...register("num", {
+                required: true,
+              })}
+            />
+            {errors.num && (
+              <p className="mb-6 text-xs text-red-600">
+                This field is required
+              </p>
+            )}
             <input
               hidden
               {...register("collectionName", { value: collectionName })}

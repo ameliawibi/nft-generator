@@ -7,7 +7,11 @@ import "./form.css";
 export default function Login() {
   const { onLogin } = useAuth();
 
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
 
   const onError = (errors, e) => console.log(errors, e);
 
@@ -19,27 +23,37 @@ export default function Login() {
       <form onSubmit={handleSubmit(onLogin, onError)}>
         <label className="Label">Email</label>
         <input
-          className="Input mb-6"
+          name="email"
+          className="Input mb-2"
           {...register("email", {
             required: true,
           })}
         />
+        {errors.email && (
+          <p className="mb-6 text-xs text-red-600">This field is required</p>
+        )}
         <label className="Label">Password</label>
         <input
-          className="Input mb-6"
+          name="password"
+          className="Input mb-2"
           {...register("password", {
             required: true,
           })}
         />
-        <Button variant="text" component="label">
-          Sign in
-          <button hidden type="submit" />
-        </Button>
-        <Link to="/signup">
+        {errors.password && (
+          <p className="mb-6 text-xs text-red-600">This field is required</p>
+        )}
+        <div>
           <Button variant="text" component="label">
-            Sign Up Now
+            Sign in
+            <button hidden type="submit" />
           </Button>
-        </Link>
+          <Link to="/signup">
+            <Button variant="text" component="label">
+              Sign Up Now
+            </Button>
+          </Link>
+        </div>
       </form>
     </>
   );

@@ -5,7 +5,11 @@ import axios from "axios";
 import "./form.css";
 
 export default function SignUp() {
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm();
   const navigate = useNavigate();
 
   const onSignup = async (data) => {
@@ -26,25 +30,35 @@ export default function SignUp() {
       <form onSubmit={handleSubmit(onSignup, onError)}>
         <label className="Label">Name</label>
         <input
-          className="Input mb-6"
+          name="name"
+          className="Input mb-2"
           {...register("name", {
             required: true,
           })}
         />
+        {errors.name && (
+          <p className="mb-6 text-xs text-red-600">This field is required</p>
+        )}
         <label className="Label">Email</label>
         <input
-          className="Input mb-6"
+          className="Input mb-2"
           {...register("email", {
             required: true,
           })}
         />
+        {errors.email && (
+          <p className="mb-6 text-xs text-red-600">This field is required</p>
+        )}
         <label className="Label">Password</label>
         <input
-          className="Input mb-6"
+          className="Input mb-2"
           {...register("password", {
             required: true,
           })}
         />
+        {errors.password && (
+          <p className="mb-6 text-xs text-red-600">This field is required</p>
+        )}
         <Button variant="text" component="label">
           Sign up
           <button hidden type="submit" />
