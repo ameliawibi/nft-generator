@@ -20,30 +20,39 @@ async function uploadToS3(base64PngImage, filename) {
     let base64 = base64PngImage.split(",")[1];
     let imageBuffer = new Buffer.from(base64, "base64");
 
-    s3.upload(
-      {
-        Bucket: bucketName,
-        Key: filename,
-        Body: imageBuffer,
-        ContentEncoding: "base64",
-        ContentType: "image/png",
-      },
-      function (err, data) {
-        if (err) {
+    let params = {
+      Bucket: bucketName,
+      Key: filename,
+      Body: imageBuffer,
+      ContentEncoding: "base64",
+      ContentType: "image/png",
+    };
+    let s3upload = s3.upload(params).promise();
+
+    let uploadWithRetry = async () => {
+      s3upload
+        .then(function (data) {
+          //console.log(data);
+          if (data.Key === undefined) {
+            console.log("Retry upload");
+            uploadWithRetry();
+          } else {
+            let nftUrl = s3.getSignedUrlPromise("getObject", {
+              Bucket: bucketName,
+              Key: data.Key,
+              Expires: 60 * 24,
+            });
+            console.log("succesfully uploaded the image!");
+
+            resolve(nftUrl);
+          }
+        })
+        .catch(function (err) {
           console.log(err);
           console.log("Error uploading data: ", data);
-        } else {
-          let nftUrl = s3.getSignedUrl("getObject", {
-            Bucket: bucketName,
-            Key: data.key,
-            Expires: 60 * 24,
-          });
-          console.log("succesfully uploaded the image!");
-
-          resolve(nftUrl);
-        }
-      }
-    );
+        });
+    };
+    uploadWithRetry();
   });
 }
 
@@ -54,6 +63,8 @@ export default async function generateNFTs(
   layersFolder
 ) {
   await emptyNFTFolder(bucketName, NFTfolder);
+
+  console.log("this runs");
 
   let generated = new Set();
 

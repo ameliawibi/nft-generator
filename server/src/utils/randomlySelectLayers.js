@@ -22,7 +22,7 @@ export async function listOfObjects(folder) {
             });
             updatedData[index].SignedUrl = urlToAdd;
           });
-
+          //console.log(updatedData);
           resolve(updatedData);
         }
       }
@@ -40,7 +40,7 @@ export async function getLayersUrl(fileShortName, data) {
   const found = layersUrl
     .filter((item) => item.fileName.includes(fileShortName))
     .map((item) => item.signedUrl);
-
+  //console.log(found[0]);
   return found[0];
 }
 
