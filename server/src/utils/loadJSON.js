@@ -1,4 +1,5 @@
 import { XMLHttpRequest } from "xmlhttprequest";
+const env = process.env.NODE_ENV || "development";
 
 export default async function loadJSON(path, error) {
   return new Promise((resolve, reject) => {
@@ -15,7 +16,15 @@ export default async function loadJSON(path, error) {
         resolve(obj);
       }
     };
-    xhr.open("GET", path, true);
-    xhr.send();
+    if (env === "production") {
+      const herokuKey = btoa(":" + process.env.HEROKU_LOADJSON_TOKEN + "\n");
+      xhr.open("GET", path, true);
+      xhr.setRequestHeader("Accept", "application/vnd.heroku+json; version=3");
+      xhr.setRequestHeader("Authorization", herokuKey);
+      xhr.send();
+    } else {
+      xhr.open("GET", path, true);
+      xhr.send();
+    }
   });
 }
