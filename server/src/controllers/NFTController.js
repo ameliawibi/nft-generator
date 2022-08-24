@@ -5,9 +5,16 @@ import generateNFTs from "../utils/generateNFTs";
 import zipNFTs from "../utils/zipNFTs";
 import { listOfObjects } from "../utils/randomlySelectLayers";
 import { getFileExt } from "../utils/fileName";
-import printJSON from "../utils/loadJson";
+import axios from "axios";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
+
+function printJSON(path) {
+  return new Promise(async (resolve, reject) => {
+    const response = await axios.get(path);
+    resolve(response.data);
+  });
+}
 
 export default {
   async generateNFT(req, res) {
