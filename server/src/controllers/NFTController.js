@@ -5,7 +5,7 @@ import generateNFTs from "../utils/generateNFTs";
 import zipNFTs from "../utils/zipNFTs";
 import { listOfObjects } from "../utils/randomlySelectLayers";
 import { getFileExt } from "../utils/fileName";
-import loadJSON from "../utils/loadJson";
+import printJSON from "../utils/loadJson";
 
 const bucketName = process.env.AWS_BUCKET_NAME;
 
@@ -102,9 +102,8 @@ export default {
     const pushMetadataToImageList = async () => {
       Promise.all(
         imageList.map(async (_obj, index) => {
-          imageList[index].jsonContent = await loadJSON(
-            jsonList[index].SignedUrl,
-            "jsonp"
+          imageList[index].jsonContent = await printJSON(
+            jsonList[index].SignedUrl
           );
         })
       ).then((_response) =>
