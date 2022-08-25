@@ -3,7 +3,11 @@ import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import getCookie from "../utils/getCookie";
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext({
+  token: "",
+  onLogin: () => Promise.resolve(),
+  onLogout: () => Promise.resolve(),
+});
 
 export function AuthProvider({ children }) {
   const navigate = useNavigate();

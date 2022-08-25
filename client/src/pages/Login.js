@@ -13,13 +13,16 @@ export default function Login() {
     handleSubmit,
   } = useForm();
 
-  const onError = (errors, e) => console.log(errors, e);
+  const onError = (err, e) => {
+    console.log(err, e);
+  };
 
   return (
     <>
       <h1 className="FormTitle" sx={{ m: 2 }}>
         Login
       </h1>
+
       <form onSubmit={handleSubmit(onLogin, onError)}>
         <label className="Label">Email</label>
         <input
