@@ -45,6 +45,7 @@ export default function Login() {
         <input
           name="email"
           className="Input mb-2"
+          placeholder="Your email"
           {...register("email", {
             required: true,
           })}
@@ -54,7 +55,9 @@ export default function Login() {
         )}
         <label className="Label">Password</label>
         <input
+          type="password"
           name="password"
+          placeholder="Your password"
           className="Input mb-2"
           {...register("password", {
             required: true,

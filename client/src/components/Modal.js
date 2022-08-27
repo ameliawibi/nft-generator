@@ -72,6 +72,7 @@ export default function BasicModal({
             <input
               name="num"
               type="number"
+              placeholder="Enter a number"
               className="InputModal mb-2"
               {...register("num", {
                 required: true,

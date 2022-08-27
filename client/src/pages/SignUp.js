@@ -46,6 +46,7 @@ export default function SignUp() {
         <label className="Label">Name</label>
         <input
           name="name"
+          placeholder="Your name"
           className="Input mb-2"
           {...register("name", {
             required: true,
@@ -57,6 +58,7 @@ export default function SignUp() {
         <label className="Label">Email</label>
         <input
           className="Input mb-2"
+          placeholder="Your email"
           {...register("email", {
             required: true,
           })}
@@ -66,7 +68,9 @@ export default function SignUp() {
         )}
         <label className="Label">Password</label>
         <input
+          type="password"
           className="Input mb-2"
+          placeholder="Your password"
           {...register("password", {
             required: true,
           })}

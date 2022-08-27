@@ -21,17 +21,24 @@ export default function MainNav() {
           sx={{
             width: "100%",
             display: "flex",
-            justifyContent: "space-around",
+            justifyContent: "space-between",
             bgcolor: "background.paper",
           }}
         >
-          <Tabs value={value} onChange={handleChange} centered>
+          <Tabs
+            className="ml-10"
+            value={value}
+            onChange={handleChange}
+            centered
+          >
             <Tab component={Link} label="Collection" to="collection" />
             <Tab component={Link} label="NFT" to="nft" />
           </Tabs>
-          <Button variant="contained" onClick={onLogout}>
-            Sign Out
-          </Button>
+          <div className="mr-10">
+            <Button variant="contained" onClick={onLogout}>
+              Sign Out
+            </Button>
+          </div>
         </Box>
       )}
     </>
