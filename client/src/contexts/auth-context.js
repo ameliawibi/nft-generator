@@ -5,6 +5,7 @@ import getCookie from "../utils/getCookie";
 
 export const AuthContext = createContext({
   token: "",
+  message: "",
   onLogin: () => Promise.resolve(),
   onLogout: () => Promise.resolve(),
 });
@@ -14,15 +15,22 @@ export function AuthProvider({ children }) {
   const location = useLocation();
 
   const [token, setToken] = useState(getCookie("x-access-token"));
+  const [message, setMessage] = useState(null);
 
   const handleLogin = async (data) => {
-    const response = await axios.post("/auth/signin", data);
+    try {
+      const response = await axios.post("/auth/signin", data);
 
-    const origin = location.state?.from?.pathname || "/collection";
+      const origin = location.state?.from?.pathname || "/collection";
 
-    if (response.status === 200) {
-      setToken(response.data.accessToken);
-      navigate(origin);
+      if (response.status === 200) {
+        setToken(response.data.accessToken);
+        setMessage(response.data.message);
+
+        navigate(origin);
+      }
+    } catch (e) {
+      setMessage(e.response.data.message);
     }
   };
 
@@ -36,6 +44,7 @@ export function AuthProvider({ children }) {
 
   const value = {
     token,
+    message,
     onLogin: handleLogin,
     onLogout: handleLogout,
   };

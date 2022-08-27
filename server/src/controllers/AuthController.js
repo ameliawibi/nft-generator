@@ -60,6 +60,7 @@ export default {
         name: user.dataValues.name,
         email: user.dataValues.email,
         accessToken: token,
+        message: "Successfully logged in",
       });
     } catch (e) {
       console.log(e);

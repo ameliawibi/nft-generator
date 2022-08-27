@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 
 export default function UploadNew() {
   const [theMessage, setMessage] = useState("");
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState({ type: null, size: 0 });
   const { uploadCollection } = useCollection();
 
   const onChange = (e) => {
@@ -28,10 +28,10 @@ export default function UploadNew() {
   return (
     <div>
       <label
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+        className="block mb-2 text-md font-medium text-gray-900 dark:text-gray-300"
         htmlFor="file_input"
       >
-        Upload file
+        Upload collection
       </label>
       <p
         className="mt-1 text-sm text-gray-500 dark:text-gray-300"
@@ -40,17 +40,26 @@ export default function UploadNew() {
         ZIP File (Max 90 MB)
       </p>
       <input
-        className="block w-1/5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-2"
+        className="block w-2/5 text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 mb-2"
         aria-describedby="file_input_help"
         id="file_input"
         type="file"
         onChange={onChange}
       />
-
-      <Button variant="outlined" component="label" onClick={uploadFile}>
+      {theMessage && <p className="mb-2 text-xs text-red-600"> {theMessage}</p>}
+      <Button
+        variant="outlined"
+        disabled={
+          selectedFile.size <= 90000000 &&
+          selectedFile.type === "application/zip"
+            ? false
+            : true
+        }
+        component="label"
+        onClick={uploadFile}
+      >
         Upload
       </Button>
-      <p className="text-xs text-gray-600"> {theMessage}</p>
     </div>
   );
 }

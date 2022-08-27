@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "@mui/material/Button";
+import CustomSnackbar from "../components/CustomSnackbar";
 import axios from "axios";
+import { useState } from "react";
 import "./form.css";
 
 export default function SignUp() {
@@ -12,12 +14,25 @@ export default function SignUp() {
   } = useForm();
   const navigate = useNavigate();
 
+  const [open, setOpen] = useState(false);
+  const [severity, setSeverity] = useState(null);
+  const [message, setMessage] = useState(null);
+
   const onSignup = async (data) => {
-    const response = await axios.post("/auth/signup", data);
-    if (response.status === 200) {
-      console.log("Sign Up success");
-      navigate("/login");
+    try {
+      const response = await axios.post("/auth/signup", data);
+      if (response.status === 200) {
+        navigate("/login");
+      }
+    } catch (e) {
+      setMessage(e.response.data.message);
+      setOpen(true);
+      setSeverity("error");
     }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
 
   const onError = (errors, e) => console.log(errors, e);
@@ -69,6 +84,14 @@ export default function SignUp() {
           </Button>
         </Link>
       </form>
+      {message && (
+        <CustomSnackbar
+          open={open}
+          severity={severity}
+          handleClose={handleClose}
+          message={message}
+        />
+      )}
     </>
   );
 }

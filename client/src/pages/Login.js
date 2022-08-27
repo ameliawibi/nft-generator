@@ -2,10 +2,12 @@ import { useAuth } from "../hooks/useAuth";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import Button from "@mui/material/Button";
+import CustomSnackbar from "../components/CustomSnackbar";
+import { useState } from "react";
 import "./form.css";
 
 export default function Login() {
-  const { onLogin } = useAuth();
+  const { onLogin, message } = useAuth();
 
   const {
     register,
@@ -17,13 +19,28 @@ export default function Login() {
     console.log(err, e);
   };
 
+  const [open, setOpen] = useState(false);
+  const [severity, setSeverity] = useState(null);
+
+  const onSubmit = (data) => {
+    onLogin(data);
+    message === "Successfully logged in"
+      ? setSeverity("success")
+      : setSeverity("error");
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <h1 className="FormTitle" sx={{ m: 2 }}>
         Login
       </h1>
 
-      <form onSubmit={handleSubmit(onLogin, onError)}>
+      <form onSubmit={handleSubmit(onSubmit, onError)}>
         <label className="Label">Email</label>
         <input
           name="email"
@@ -58,6 +75,14 @@ export default function Login() {
           </Link>
         </div>
       </form>
+      {message && (
+        <CustomSnackbar
+          open={open}
+          severity={severity}
+          handleClose={handleClose}
+          message={message}
+        />
+      )}
     </>
   );
 }

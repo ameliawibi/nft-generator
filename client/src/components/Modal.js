@@ -39,7 +39,7 @@ export default function BasicModal({
     isNFTGenerated(collectionId);
   };
 
-  const onError = (errors, e) => console.log(errors, e);
+  const onError = (err, e) => console.log(err, e);
 
   return (
     <div>
