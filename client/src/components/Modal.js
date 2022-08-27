@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -5,6 +6,7 @@ import Modal from "@mui/material/Modal";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useCollection } from "../hooks/useCollection";
+import CustomSnackbar from "../components/CustomSnackbar";
 
 const style = {
   position: "absolute",
@@ -31,9 +33,19 @@ export default function BasicModal({
     handleSubmit,
   } = useForm();
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [severity, setSeverity] = useState(null);
+  const [message, setMessage] = useState(null);
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
   const onSubmit = (data, e) => {
     axios.post(`/${collectionId}/generateNFT`, data).then((res) => {
-      console.log(res);
+      setMessage(res.data.message);
+      setOpenSnackbar(true);
+      setSeverity("success");
     });
 
     isNFTGenerated(collectionId);
@@ -81,6 +93,14 @@ export default function BasicModal({
           </Box>
         </form>
       </Modal>
+      {message && (
+        <CustomSnackbar
+          open={openSnackbar}
+          severity={severity}
+          handleClose={handleCloseSnackbar}
+          message={message}
+        />
+      )}
     </div>
   );
 }

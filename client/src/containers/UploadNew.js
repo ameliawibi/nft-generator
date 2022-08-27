@@ -9,7 +9,10 @@ export default function UploadNew() {
 
   const onChange = (e) => {
     // Update the state
-    setSelectedFile(e.target.files[0]);
+    setSelectedFile(
+      e.target.files[0] ? e.target.files[0] : { type: null, size: 0 }
+    );
+    setMessage("");
   };
 
   const uploadFile = (e) => {
@@ -46,7 +49,9 @@ export default function UploadNew() {
         type="file"
         onChange={onChange}
       />
-      {theMessage && <p className="mb-2 text-xs text-red-600"> {theMessage}</p>}
+      {theMessage && (
+        <p className="mb-2 text-xs text-gray-600"> {theMessage}</p>
+      )}
       <Button
         variant="outlined"
         disabled={

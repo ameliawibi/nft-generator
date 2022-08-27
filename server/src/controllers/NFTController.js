@@ -41,7 +41,7 @@ export default {
       const layers = await generateContents(attributes);
 
       res.status(200).json({
-        message: "Success!",
+        message: "Generating NFTs in progress..",
         layers,
       });
 
@@ -58,6 +58,9 @@ export default {
       );
     } catch (error) {
       console.log(error);
+      res.status(500).json({
+        message: "Something went wrong!",
+      });
     }
   },
 

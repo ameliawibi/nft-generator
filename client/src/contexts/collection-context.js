@@ -87,7 +87,7 @@ export const CollectionProvider = ({ children }) => {
       })
       .catch((error) => {
         console.error(error.response);
-        setMessage("Please select a file");
+        setMessage(error.response.data.message);
       });
   };
 

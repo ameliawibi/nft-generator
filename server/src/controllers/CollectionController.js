@@ -77,6 +77,9 @@ export default {
       } catch (error) {
         console.log(error);
         await t.rollback();
+        res
+          .status(500)
+          .json({ message: "Something went wrong. Please try again" });
       }
     }
   },
