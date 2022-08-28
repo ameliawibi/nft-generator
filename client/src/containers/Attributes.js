@@ -4,6 +4,7 @@ import FieldArray from "../components/Fields";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function Attributes({ collectionId }) {
   const [defaultValues, setDefaultValues] = useState(null);
@@ -56,6 +57,7 @@ export default function Attributes({ collectionId }) {
 
   return (
     <div>
+      <ScrollToTop />
       <Button sx={{ ml: 1, my: 2 }} onClick={() => navigate(-1)}>
         ⧀ Go back to Collection
       </Button>
