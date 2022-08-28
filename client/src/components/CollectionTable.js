@@ -9,6 +9,7 @@ import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
 import BasicModal from "../components/Modal";
+import BaseURIModal from "./BaseURIModal";
 import CloudDownloadIcon from "@mui/icons-material/CloudDownload";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import dayjs from "dayjs";
@@ -36,6 +37,18 @@ export default function CollectionTable({
   const handleClose = () =>
     setModalState({ open: false, collectionId: "", collectionName: "" });
 
+  const [URImodalState, setURIModalState] = useState({
+    open: false,
+    collectionId: "",
+  });
+  const handleOpenURI = (collectionId) =>
+    setURIModalState({
+      open: true,
+      collectionId: collectionId,
+    });
+  const handleCloseURI = () =>
+    setURIModalState({ open: false, collectionId: "" });
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -44,7 +57,7 @@ export default function CollectionTable({
             <TableCell>#</TableCell>
             <TableCell align="right">Collection</TableCell>
             <TableCell align="right">Created at</TableCell>
-            <TableCell align="right">isNFTGenerated</TableCell>
+
             <TableCell align="right">Action</TableCell>
           </TableRow>
         </TableHead>
@@ -64,19 +77,30 @@ export default function CollectionTable({
                   {row.id}
                 </TableCell>
                 <TableCell onClick={() => handleNavigate(row.id)} align="right">
-                  {row.collectionName}
+                  {row.collectionName
+                    .substring(0, row.collectionName.length - 4)
+                    .toUpperCase()}
                 </TableCell>
                 <TableCell onClick={() => handleNavigate(row.id)} align="right">
                   {dayjs(row.createdAt).format("L LT")}
                 </TableCell>
-                <TableCell onClick={() => handleNavigate(row.id)} align="right">
-                  {row.isNFTGenerated ? "Yes" : "No"}
-                </TableCell>
+
                 <TableCell align="right">
                   {row.isNFTGenerated && (
-                    <Button variant="text" onClick={() => downloadNFT(row.id)}>
-                      <CloudDownloadIcon />
-                    </Button>
+                    <>
+                      <Button
+                        variant="text"
+                        onClick={() => downloadNFT(row.id)}
+                      >
+                        <CloudDownloadIcon />
+                      </Button>
+                      <Button
+                        variant="text"
+                        onClick={() => handleOpenURI(row.id)}
+                      >
+                        IPFS
+                      </Button>
+                    </>
                   )}
 
                   <Button variant="text" component="label">
@@ -94,11 +118,17 @@ export default function CollectionTable({
                   >
                     Generate NFT
                   </Button>
+
                   <BasicModal
                     open={modalState.open}
                     handleClose={handleClose}
                     collectionId={modalState.collectionId}
                     collectionName={modalState.collectionName}
+                  />
+                  <BaseURIModal
+                    open={URImodalState.open}
+                    handleClose={handleCloseURI}
+                    collectionId={URImodalState.collectionId}
                   />
                 </TableCell>
               </TableRow>

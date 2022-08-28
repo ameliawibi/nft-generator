@@ -8,6 +8,7 @@ import { upload } from "./src/middlewares/upload";
 import authJwt from "./src/middlewares/authJwt";
 import NFTController from "./src/controllers/NFTController";
 import AttributesController from "./src/controllers/AttributesController";
+import replaceBaseURI from "./src/controllers/replaceBaseURI";
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -82,6 +83,8 @@ app.delete(
   authJwt.verifyToken,
   CollectionController.deleteCollection
 );
+
+app.post("/:collectionId/replaceJSON", replaceBaseURI.replaceBaseURI);
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {
