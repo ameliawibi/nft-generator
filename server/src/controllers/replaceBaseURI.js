@@ -34,7 +34,7 @@ export default {
       Promise.all(
         jsonList.map(async (_obj, index) => {
           let newJson = await printJSON(jsonList[index].SignedUrl);
-          newJson.image = `ipfs://${baseURI}/${newJson.id}.png`;
+          newJson.image = `https://gateway.pinata.cloud/ipfs/${baseURI}/${newJson.id}.png`;
           console.log(newJson);
           uploadJsonToS3(newJson, `${newJson.id}.json`, NFTFolder);
         })

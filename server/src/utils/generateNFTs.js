@@ -113,10 +113,10 @@ function generateMetadata(
     });
   }
   return {
-    attributes,
-    description,
     id: tokenId,
-    image: nftUrl,
     name: `${collectionName} #${tokenId}`,
+    description,
+    image: nftUrl,
+    attributes,
   };
 }

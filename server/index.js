@@ -73,8 +73,8 @@ app.post(
 
 app.post(
   "/uploadfile",
-  upload.single("file"),
   authJwt.verifyToken,
+  upload.single("file"),
   CollectionController.uploadCollection
 );
 
@@ -84,7 +84,11 @@ app.delete(
   CollectionController.deleteCollection
 );
 
-app.post("/:collectionId/replaceJSON", replaceBaseURI.replaceBaseURI);
+app.post(
+  "/:collectionId/replaceJSON",
+  authJwt.verifyToken,
+  replaceBaseURI.replaceBaseURI
+);
 
 // All other GET requests not handled before will return our React app
 app.get("*", (req, res) => {
