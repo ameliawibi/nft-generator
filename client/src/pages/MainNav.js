@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 export default function MainNav() {
@@ -31,7 +31,7 @@ export default function MainNav() {
             onChange={handleChange}
             centered
           >
-            <Tab component={Link} label="Collection" to="collection" />
+            <Tab component={Link} label="Collection" to="/collection" />
             <Tab component={Link} label="NFT" to="nft" />
           </Tabs>
           <div className="mr-10">
@@ -41,6 +41,7 @@ export default function MainNav() {
           </div>
         </Box>
       )}
+      <Outlet />
     </>
   );
 }

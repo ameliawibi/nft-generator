@@ -13,48 +13,51 @@ import SignUp from "./pages/SignUp";
 function App() {
   const { state } = useLocation();
   const { collectionId } = state || {};
-  const [currPath, setCurrPath] = useState(window.location.pathname);
+  //const [currPath, setCurrPath] = useState(window.location.pathname);
 
-  useEffect(() => {
+  /*useEffect(() => {
     setCurrPath(window.location.pathname);
     // eslint-disable-next-line
   }, [window.location.pathname]);
+  */
 
+  //  {currPath !== "/login" && currPath !== "/signup" && <MainNav />}
   return (
     <AuthProvider>
-      {currPath !== "/login" && currPath !== "/signup" && <MainNav />}
       <div className="mx-10 my-6">
         <Routes>
           <Route index element={<Login />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<SignUp />} />
-          <Route
-            path="collection"
-            element={
-              <CollectionProvider>
+          <Route path="collection" element={<MainNav />}>
+            <Route
+              index
+              element={
+                <CollectionProvider>
+                  <ProtectedRoute>
+                    <Collection />
+                  </ProtectedRoute>
+                </CollectionProvider>
+              }
+            />
+            <Route
+              exact
+              path="/collection/attribute/:collectionId"
+              element={
                 <ProtectedRoute>
-                  <Collection />
+                  <Attributes collectionId={collectionId} />
                 </ProtectedRoute>
-              </CollectionProvider>
-            }
-          />
-          <Route
-            exact
-            path="/collection/attribute/:collectionId"
-            element={
-              <ProtectedRoute>
-                <Attributes collectionId={collectionId} />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="nft"
-            element={
-              <ProtectedRoute>
-                <NFT />
-              </ProtectedRoute>
-            }
-          />
+              }
+            />
+            <Route
+              path="nft"
+              element={
+                <ProtectedRoute>
+                  <NFT />
+                </ProtectedRoute>
+              }
+            />
+          </Route>
         </Routes>
       </div>
     </AuthProvider>
